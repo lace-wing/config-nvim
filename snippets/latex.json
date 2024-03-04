@@ -1,0 +1,160 @@
+{
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	"BasicArticle": {
+        "prefix": ["template-basic-article"],
+        "body": ["\\documentclass{article}",
+            "\\title{${1:Default Title}}",
+            "\\author{${2:Default Author}}",
+			"$2",
+            "\\begin{document}", 
+            "\\maketitle",
+			"\\tableofcontents",
+			"\\break",
+            "$0",
+            "\\end{document}"
+        ],
+        "description": "Generates a simple LaTeX article template"
+    },
+	"CommonPackage": {
+		"prefix": ["package-common"],
+		"body": [
+			"\\usepackage{graphicx}", 
+			"\\graphicspath{ {./Assets/} }", 
+			"\\usepackage{amsmath}", 
+			"\\usepackage{babel}", 
+			"\\usepackage[",
+				"\tcolorlinks=true,",
+				"\tlinkcolor=teal,",
+				"\tfilecolor=magenta,",
+				"\turlcolor=blue,",
+				"\tcitecolor=olive",
+			"]{hyperref}",
+			"\\usepackage{tikz}",
+			"\\usepackage[a4paper, total={6in, 9in}]{geometry}"
+		], 
+		"description": "Uses commonly used packages",
+	}, 
+	"ChinesePackage":{
+		"prefix": "package-cn", 
+		"body": "\\usepackage[UTF8]{ctex}", 
+		"description": "Uses packages to support Chinese"
+	}, 
+	"ChemPackage":{
+		"prefix": "package-chem",
+		"body": [
+			"\\usepackage[version=4]{mhchem}",
+			"\\usepackage{chemfig}",
+			"\\usepackage{modiagram}"
+		],
+		"description": "Uses common chemimstry packages"
+	},
+	"MicroTypePackage":{
+		"prefix": "package-microtype",
+		"body": [
+			"\\usepackage[",
+    			"\tactivate={true,nocompatibility},",
+				"\tfinal,tracking=true,",
+    			"\tkerning=true,",
+    			"\tspacing=true,",
+    			"\tfactor=1100,",
+    			"\tstretch=10,",
+    			"\tshrink=10",
+			"]{microtype}",
+			"\\microtypecontext{spacing=nonfrench}",
+		],
+		"description": "Uses the microtype package with options"
+	},
+	"List&TablePackage":{
+		"prefix": "package-list-n-table",
+		"body": [
+			"\\usepackage{enumitem}",
+			"\\usepackage{multirow}"
+		]
+	},
+	"TextFormatPackage":{
+		"prefix": "package-text-format",
+		"body": [
+			"\\usepackage[normalem]{ulem}"
+		]
+	},
+	"PGFPackage":{
+		"prefix": "package-pgf",
+		"body": [
+			"\\usepackage{pgfplots}",
+			"\\usepackage{pgfplotstable}",
+			"\\pgfplotsset{compat = newest}"
+		]
+	},
+	"CommonCommands":{
+		"prefix": "command-common",
+		"body": [
+			"\\newcommand{\\tktheorem}[4]{",
+				"\t\\begin{tikzpicture}",
+					"\t\t\\node[anchor = text, text width = \\columnwidth * 0.9, draw, rounded corners, line width = 1pt, fill = #4, inner sep = 3mm] (big) {\\\\\\\\#3};",
+					"\t\t\\node[draw, rounded corners, line width = .5pt, fill = #2, anchor = west, xshift = 5mm] (small) at (big.north west) {#1};",
+				"\t\\end{tikzpicture}",
+			"}",
+			"\\newcommand{\\tkbox}[2]{",
+				"\t\\begin{tikzpicture}",
+					"\t\t\\node[anchor = text, text width = \\columnwidth * 0.9, draw, rounded corners, line width = 1pt, fill = #2, inner sep = 3mm] (big) {#1};",
+				"\t\\end{tikzpicture}",
+			"}"
+		],
+		"description": "Sets commomly used commands"
+	},
+	"FigureHere":{
+		"prefix": "fig-here", 
+		"body": [
+			"\\begin{figure}[h]", 
+				"\t\\centering", 
+				"\t\\includegraphics{${1:fig}}", 
+				"\t\\caption{${2:caption}}", 
+				"\t\\label{fig:${3:label}}", 
+			"\\end{figure}"
+		]
+	},
+	"TableHere":{
+		"prefix": "tb-here",
+		"body": [
+			"\\begin{tabular}{|*{${1:culumnum}}{${2:textalign}|}}$0",
+			"\t\\hline",
+			"\\end{tabular}"
+		],
+		"description": "Adds a latex table here"
+	},
+	"TableNewLine2":{
+		"prefix": "tb-nl-2", 
+		"body": [
+			"\\hline",
+			"$1 & $2 \\\\\\\\$0"
+		],
+		"description": "Adds a new line to a Latex table, include \\hline"
+	},
+	"TableNewLine3":{
+		"prefix": "tb-nl-3", 
+		"body": [
+			"\\hline",
+			"$1 & $2 & $3 \\\\\\\\$0"
+		],
+		"description": "Adds a new line to a Latex table, include \\hline"
+	},
+	"TableNewLine4":{
+		"prefix": "tb-nl-4", 
+		"body": [
+			"\\hline",
+			"$1 & $2 & $3 & $4 \\\\\\\\$0"
+		],
+		"description": "Adds a new line to a Latex table, include \\hline"
+	},
+	"ChemSchemeHere":{
+		"prefix": "chemscheme-here",
+		"body": [
+			"\\schemestart",
+				"\t$0",
+			"\\schemestop",
+			"\\chemnameinit{}"
+		],
+		"description": "Requires package 'chemfig'"
+	}
+}

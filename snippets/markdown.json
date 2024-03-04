@@ -1,0 +1,60 @@
+{
+	// Place your snippets for markdown here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"MarpDarkCourier":{
+		"prefix": "mp-nsd-d-cor",
+		"body": [
+			"---",
+			"marp: true",
+			"author: ${1:Somebody}",
+			"title: ${2:A Marp Slide Deck}",
+			"description: ${3:A slide deck created by Marp}",		
+			"theme: uncover",
+			"class: invert",
+			"paginate: true",
+			"style: |",
+				"\tsection {",
+					"\t\tfont-family: Courier;",
+				"\t}",
+				"\t.container {",
+					"\t\tdisplay: flex;",
+				"}",
+				"\t.col {",
+					"\t\tflex: 1;",
+				"}",
+			"---",
+			"<!--- _paginate: false --->",
+			"# ${4:Title}",
+			"$0"
+		]
+	},
+	"HTMLComment":{
+		"prefix": "hcom",
+		"body": "<!--- $1 --->$0",
+		"description": "Adds an HTML comment"
+	},
+	"HTML2Cols":{
+		"prefix": "hcol-2",
+		"body": [
+			"<div class=\"container\">",
+				"\t<div class=\"col\">",
+					"\t\t$1",
+				"\t</div>",
+				"\t<div class=\"col\">",
+					"\t\t$2",
+				"\t</div>",
+			"</div>",
+		]
+	}
+}

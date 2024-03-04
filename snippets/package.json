@@ -1,0 +1,22 @@
+{
+	"name": "lacesnips",
+	"version": "1.0.0"
+	"categories":[
+		"Snippets"
+	],
+	"contributes":{
+		"languages": [
+			{
+				"id": "latex",
+				"aliases": ["LaTeX", "latex"],
+				"extensions": [".tex"],
+			},
+		],
+		"snippets":[
+			{
+				"language": ["latex", "tex", "plainlatex"],
+				"path": "./latex.json"
+			},
+		],
+	},
+}
