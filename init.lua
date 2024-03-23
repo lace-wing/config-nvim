@@ -164,6 +164,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
+      "nushell/tree-sitter-nu",
     },
     build = ':TSUpdate',
   },
@@ -310,6 +311,9 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>cc', '"+yy')
     end,
   } ]]
+  {
+    'LhKipp/nvim-nu'
+  },
   -- PLUGINS HERE
 }, {})
 
@@ -356,6 +360,10 @@ vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
 
 vim.o.cursorline = true
+
+-- show hidden chars
+vim.o.list = true
+-- vim.o.listchars = "tab:>"
 
 vim.cmd([[
   hi clear SpellBad
@@ -568,7 +576,7 @@ local servers = {
   pyright = {},
   rust_analyzer = {},
   tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  html = { filetypes = { 'html', 'twig', 'hbs'} },
 
   lua_ls = {
     Lua = {
@@ -578,7 +586,7 @@ local servers = {
   },
 
   omnisharp = {
-    handlers = {
+    handlers = { --TODO not working
       ['textDocument/definition'] = require('omnisharp_extended').handler,
     },
     cmd = {omnisharp_bin, '--languageserver' , '--hostPID', tostring(pid) },
