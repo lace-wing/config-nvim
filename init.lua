@@ -204,7 +204,7 @@ require('lazy').setup({
     lazy = false;
     config = function()
       vim.g.macosime_cjk_ime = 'com.apple.inputmethod.SCIM.ITABC'
-      vim.g.macosime_normal_ime = 'com.apple.keylayout.ABC'
+      vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
     end,
   },
 
@@ -246,9 +246,9 @@ require('lazy').setup({
   },
   {
     'rcarriga/nvim-dap-ui',
-    config = function ()
-      require('dapui').setup()
-    end
+    -- config = function ()
+    --   require('dapui').setup()
+    -- end
   },
   {
     'tigion/nvim-asciidoc-preview',
@@ -443,7 +443,19 @@ vim.keymap.set('n', 'gd', require('omnisharp_extended').telescope_lsp_definition
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim', 'c_sharp' },
+  ensure_installed = { 'c',
+    'cpp',
+    'go',
+    'lua',
+    'python',
+    'rust',
+    'tsx',
+    'typescript',
+    'vimdoc',
+    'vim',
+    'c_sharp',
+    "tinymist",
+  },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = true,
@@ -586,11 +598,11 @@ local servers = {
   },
 
   omnisharp = {
-    handlers = { --TODO not working
-      ['textDocument/definition'] = require('omnisharp_extended').handler,
-    },
-    cmd = {omnisharp_bin, '--languageserver' , '--hostPID', tostring(pid) },
-    -- cmd = { 'dotnet', '/Users/steve/.local/share/nvim/mason/packages/omnisharp/libexec/omnisharp.dll' },
+    -- handlers = { --TODO not working
+    --   ['textDocument/definition'] = require('omnisharp_extended').handler,
+    -- },
+    -- cmd = {omnisharp_bin, '--languageserver' , '--hostPID', tostring(pid) },
+    cmd = { 'dotnet', '/Users/steve/.local/share/nvim/mason/packages/omnisharp/libexec/omnisharp.dll' },
     -- enable_roslyn_analyzers = true,
     -- enable_import_completion = true,
     -- organize_imports_on_format = true,
