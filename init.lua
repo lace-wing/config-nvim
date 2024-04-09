@@ -50,6 +50,15 @@ require('lazy').setup({
   'tpope/vim-sleuth',
 
   {
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        "tinymist", -- mason-lspconfig somehow doesn't recognize tinymist
+      },
+    },
+  },
+
+  {
     'neovim/nvim-lspconfig',
     dependencies = {
       { 'williamboman/mason.nvim', config = true },
@@ -454,7 +463,6 @@ require('nvim-treesitter.configs').setup {
     'vimdoc',
     'vim',
     'c_sharp',
-    "tinymist",
   },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -611,12 +619,15 @@ local servers = {
 
   typst_lsp = {
     filetypes = { 'typst' },
-    settings = {
-      exportPdf = 'onType',
-      vim.filetype.add({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
-      -- root_dir = require('lspconfig').util.root_pattern('*'),
-    },
+    exportPdf = 'onType',
+    vim.filetype.add({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
   },
+
+  -- tinymist = {
+  --   vim.filetype.ad({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
+  --   exportPdf = 'onType',
+  --   single_file_support = true,
+  -- },
 
   nil_ls = {},
 
