@@ -323,8 +323,20 @@ require('lazy').setup({
   {
     'LhKipp/nvim-nu'
   },
+  {
+    "folke/twilight.nvim",
+    vim.keymap.set("n", "<C-t>", ":Twilight<Enter>", { desc = "Toggle [T]wilight" }),
+    opts = {
+      dimming = {
+        alpha = 0.33, -- amount of dimming
+        -- we try to get the foreground from the highlight groups or fallback color
+        term_bg = "#1e2326", -- if guibg=NONE, this will be used to calculate text color
+      },
+      context = 12,
+    }
+  },
   -- PLUGINS HERE
-}, {})
+})
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -392,8 +404,6 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 
 
 -- Buffers, tabs, windows keymaps
-vim.keymap.set('n', '<C-t>', ':Lexplore<CR>')
-
 vim.keymap.set('n', '<leader>tc', ':tabnew<CR>', { desc = '[T]ab [C]reate' })
 vim.keymap.set('n', '<leader>tn', ':tabnext<CR>', { desc = '[T]ab [N]ext' })
 vim.keymap.set('n', '<leader>tp', ':tabprevious<CR>', { desc = '[T]ab [P]revious' })
@@ -592,7 +602,6 @@ end
 --  define the property 'filetypes' to the map in question.
 local servers = {
   clangd = {},
-  -- gopls = {},
   pyright = {},
   rust_analyzer = {},
   tsserver = {},
@@ -624,7 +633,7 @@ local servers = {
   },
 
   -- tinymist = {
-  --   vim.filetype.ad({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
+  --   vim.filetype.add({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
   --   exportPdf = 'onType',
   --   single_file_support = true,
   -- },
@@ -662,6 +671,24 @@ mason_lspconfig.setup_handlers {
     }
   end
 }
+
+-- non-mason-lspconfig setup
+local sp_servers = {
+  nushell = {},
+
+  tinymist = {
+    vim.filetype.add({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
+  },
+}
+local nvim_lspconfig = require 'lspconfig'
+local sp_server_names = vim.tbl_keys(sp_servers)
+
+for i=1,#sp_server_names do
+  nvim_lspconfig[sp_server_names[i]].setup {
+    settings = sp_servers[sp_server_names[i]],
+    filetypes = (sp_servers[sp_server_names[i]] or {}).filetypes,
+  }
+end
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
