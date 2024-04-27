@@ -335,6 +335,19 @@ require('lazy').setup({
       context = 12,
     }
   },
+  {
+    "michaelb/sniprun",
+    branch = "master",
+    build = "sh install.sh 1",
+    display = {
+        "Classic",
+        "VirtualTextOk",
+    },
+    vim.keymap.set("n", "<leader>ff", "<Plug>SnipRun", { silent = true, desc = "SnipRun" }),
+    vim.keymap.set("n", "<leader>f", "<Plug>SnipRunOperator", { silent = true, desc = "SnipRunOperator" }),
+    vim.keymap.set("n", "<leader>F", "<Plug>SnipReset", { silent = true, desc = "Snipreset" }),
+    vim.keymap.set("v", "f", "<Plug>SnipRun", { silent = true, desc = "SnipRun" }),
+  },
   -- PLUGINS HERE
 })
 
@@ -455,7 +468,6 @@ vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>f', require('telescope.builtin').quickfix, { desc = 'Quick [F]ix' })
 vim.keymap.set('n', 'gd', require('omnisharp_extended').telescope_lsp_definitions, { desc = '[G]oto [D]efinition' })
 
 -- [[ Configure Treesitter ]]
