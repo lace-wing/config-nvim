@@ -641,6 +641,11 @@ local servers = {
   nil_ls = {},
 
   sqlls = {},
+
+  ltex = {
+    cmd = { "ltex-ls" },
+    filetypes = { "markdown", "text", "asciidoc", "typst" },
+  },
 }
 
 -- Setup neovim lua configuration
