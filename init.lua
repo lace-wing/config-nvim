@@ -644,19 +644,13 @@ local servers = {
     vim.filetype.add({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
   },
 
-  -- tinymist = {
-  --   vim.filetype.add({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
-  --   exportPdf = 'onType',
-  --   single_file_support = true,
-  -- },
-
   nil_ls = {},
 
   sqlls = {},
 
   ltex = {
     cmd = { "ltex-ls" },
-    filetypes = { "markdown", "text", "asciidoc", "typst" },
+    filetypes = { "markdown", "text", "asciidoc", },
   },
 }
 
@@ -693,9 +687,7 @@ mason_lspconfig.setup_handlers {
 local sp_servers = {
   nushell = {},
 
-  tinymist = {
-    vim.filetype.add({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
-  },
+  tinymist = {},
 }
 local nvim_lspconfig = require 'lspconfig'
 local sp_server_names = vim.tbl_keys(sp_servers)
