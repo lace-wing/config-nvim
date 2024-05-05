@@ -208,14 +208,14 @@ require('lazy').setup({
     end,
   },
 
-  {
-    'laishulu/vim-macos-ime',
-    lazy = false;
-    config = function()
-      vim.g.macosime_cjk_ime = 'com.apple.inputmethod.SCIM.ITABC'
-      vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
-    end,
-  },
+  -- {
+  --   'laishulu/vim-macos-ime',
+  --   lazy = false;
+  --   config = function()
+  --     vim.g.macosime_cjk_ime = 'im.rime.inputmethod.Squirrel.Hans'
+  --     vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
+  --   end,
+  -- },
 
   {
     'jiangmiao/auto-pairs',
