@@ -3,7 +3,7 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- the usual clipborad thing
+-- copy to system clipborad
 vim.opt.clipboard = { 'unnamedplus' }
 
 -- some env settings
