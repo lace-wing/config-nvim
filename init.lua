@@ -3,11 +3,12 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- DEBUG
--- vim.opt.clipboard = { 'unnamedplus' }
+-- the usual clipborad thing
+vim.opt.clipboard = { 'unnamedplus' }
 
 -- some env settings
 vim.opt.rtp:append('/usr/local/opt/fzf')
+vim.opt.path:append('**')
 
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
@@ -652,6 +653,8 @@ local servers = {
     cmd = { "ltex-ls" },
     filetypes = { "markdown", "text", "asciidoc", },
   },
+
+  zls = {},
 }
 
 -- Setup neovim lua configuration
