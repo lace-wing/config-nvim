@@ -137,6 +137,7 @@ require('lazy').setup({
 
   {
     'lukas-reineke/indent-blankline.nvim',
+    tag = "v3.5.4",
     main = 'ibl',
     opts = {
       indent = {
@@ -640,8 +641,6 @@ local servers = {
     vim.filetype.add({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
   },
 
-  nil_ls = {},
-
   sqlls = {},
 
   ltex = {
@@ -653,6 +652,13 @@ local servers = {
 
   tinymist = {},
 }
+-- add nil_ls if nix exists
+vim.cmd[[
+if executable("nix")
+  servers.append( nil_ls = {} )
+endif
+]]
+
 
 -- Setup neovim lua configuration
 require('neodev').setup({
