@@ -52,11 +52,6 @@ require('lazy').setup({
 
   {
     "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
-        "tinymist", -- mason-lspconfig somehow doesn't recognize tinymist
-      },
-    },
   },
 
   {
@@ -251,7 +246,7 @@ require('lazy').setup({
   {
     "mfussenegger/nvim-dap-python",
     config = function()
-      require('dap-python').setup('~/.nix-profile/bin/python')
+      require('dap-python').setup('/opt/homebrew/bin/python3')
     end,
   },
   {
@@ -655,6 +650,8 @@ local servers = {
   },
 
   zls = {},
+
+  tinymist = {},
 }
 
 -- Setup neovim lua configuration
@@ -689,8 +686,6 @@ mason_lspconfig.setup_handlers {
 -- non-mason-lspconfig setup
 local sp_servers = {
   nushell = {},
-
-  tinymist = {},
 }
 local nvim_lspconfig = require 'lspconfig'
 local sp_server_names = vim.tbl_keys(sp_servers)
