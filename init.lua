@@ -344,6 +344,12 @@ require('lazy').setup({
     vim.keymap.set("n", "<leader>F", "<Plug>SnipReset", { silent = true, desc = "Snipreset" }),
     vim.keymap.set("v", "f", "<Plug>SnipRun", { silent = true, desc = "SnipRun" }),
   },
+  {
+    'richardbizik/nvim-toc',
+    config = function ()
+      require'nvim-toc'.setup()
+    end
+  },
   -- PLUGINS HERE
 })
 
