@@ -353,6 +353,12 @@ require('lazy').setup({
       "kristijanhusak/vim-dadbod-ui"
     }
   },
+  {
+    'richardbizik/nvim-toc',
+    config = function ()
+      require'nvim-toc'.setup()
+    end
+  },
   -- PLUGINS HERE
 })
 
