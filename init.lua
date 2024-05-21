@@ -339,10 +339,19 @@ require('lazy').setup({
         "Classic",
         "VirtualTextOk",
     },
-    vim.keymap.set("n", "<leader>ff", "<Plug>SnipRun", { silent = true, desc = "SnipRun" }),
-    vim.keymap.set("n", "<leader>f", "<Plug>SnipRunOperator", { silent = true, desc = "SnipRunOperator" }),
-    vim.keymap.set("n", "<leader>F", "<Plug>SnipReset", { silent = true, desc = "Snipreset" }),
-    vim.keymap.set("v", "f", "<Plug>SnipRun", { silent = true, desc = "SnipRun" }),
+    config = function()
+      vim.keymap.set("n", "<leader>ff", "<Plug>SnipRun", { silent = true, desc = "SnipRun" })
+      vim.keymap.set("n", "<leader>f", "<Plug>SnipRunOperator", { silent = true, desc = "SnipRunOperator" })
+      vim.keymap.set("n", "<leader>F", "<Plug>SnipReset", { silent = true, desc = "Snipreset" })
+      vim.keymap.set("v", "f", "<Plug>SnipRun", { silent = true, desc = "SnipRun" })
+    end,
+  },
+  {
+    "tpope/vim-dadbod",
+    dependencies = {
+      "kristijanhusak/vim-dadbod-completion",
+      "kristijanhusak/vim-dadbod-ui"
+    }
   },
   -- PLUGINS HERE
 })
@@ -652,12 +661,10 @@ local servers = {
   tinymist = {},
 }
 -- add nil_ls if nix exists
-vim.cmd[[
-if executable("nix")
-  servers.append( nil_ls = {} )
-endif
-]]
-
+-- if vim.fn.executable("nix") == 1 then
+--   local nil_ls = {}
+--   servers[#servers+1] = nil_ls
+-- end
 
 -- Setup neovim lua configuration
 require('neodev').setup({
