@@ -772,6 +772,17 @@ cmp.setup {
   },
 }
 
+-- cmp for vim-dadbod
+cmp.setup.filetype(
+  { "sql" },
+  {
+    sources = {
+      { name = "vim-dadbod-completion" },
+      { name = "buffer" }
+    }
+  }
+)
+
 -- nvim-dap
 -- config for debugger
 local dap = require('dap')
