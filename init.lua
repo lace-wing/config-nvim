@@ -9,6 +9,7 @@ vim.opt.clipboard = { 'unnamedplus' }
 -- some env settings
 vim.opt.rtp:append('/usr/local/opt/fzf')
 vim.opt.path:append('**')
+vim.opt.shell = 'bash'
 
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
@@ -398,6 +399,21 @@ require('lazy').setup({
           { "<leader>ct", "<cmd>ChatGPTRun translate<CR>", desc = "Translate" },
           { "<leader>cx", "<cmd>ChatGPTRun explain_code<CR>", desc = "Explain Code" },
         },
+      })
+    end,
+  },
+  {
+    "mfussenegger/nvim-lint",
+  },
+  {
+    "nat-418/tcl.nvim",
+    dependencies = {
+      "mfussenegger/nvim-lint",
+    },
+    config = function()
+      require('tcl').setup()
+      vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+        callback = function() require('lint').try_lint() end,
       })
     end,
   },
