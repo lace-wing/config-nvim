@@ -339,14 +339,16 @@ require('lazy').setup({
     "michaelb/sniprun",
     branch = "master",
     build = "sh install.sh 1",
-    display = {
-        "Classic",
-        "VirtualTextOk",
-    },
     config = function()
+      require('sniprun').setup({
+        display = {
+            "Classic",
+            "TempFloatingWindow",
+        },
+      })
       vim.keymap.set("n", "<leader>ff", "<Plug>SnipRun", { silent = true, desc = "SnipRun" })
+      vim.keymap.set("n", "<leader>F", ":%SnipRun<CR>", { silent = true, desc = "SnipRun All" })
       vim.keymap.set("n", "<leader>f", "<Plug>SnipRunOperator", { silent = true, desc = "SnipRunOperator" })
-      vim.keymap.set("n", "<leader>F", "<Plug>SnipReset", { silent = true, desc = "Snipreset" })
       vim.keymap.set("v", "f", "<Plug>SnipRun", { silent = true, desc = "SnipRun" })
     end,
   },
@@ -554,6 +556,7 @@ require('nvim-treesitter.configs').setup {
     'vimdoc',
     'vim',
     'c_sharp',
+    'elixir'
   },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -723,6 +726,8 @@ local servers = {
   zls = {},
 
   tinymist = {},
+
+  elixirls = {}
 }
 -- add nil_ls if nix exists
 -- if vim.fn.executable("nix") == 1 then
