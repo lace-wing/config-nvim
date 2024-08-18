@@ -343,7 +343,6 @@ require('lazy').setup({
       require('sniprun').setup({
         display = {
             "Classic",
-            "TempFloatingWindow",
         },
       })
       vim.keymap.set("n", "<leader>ff", "<Plug>SnipRun", { silent = true, desc = "SnipRun" })
