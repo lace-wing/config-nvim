@@ -498,6 +498,7 @@ vim.keymap.set('n', '<leader>tp', ':tabprevious<CR>', { desc = '[T]ab [P]revious
 vim.keymap.set('n', '<leader>tq', ':tabclose<CR>', { desc = '[T]ab [Q]uit' })
 
 vim.keymap.set('n', 'Z', 'ZZ', { desc = '[Z]Z' })
+vim.keymap.set('t', '<ESC>', '<C-\\><C-n>', { desc = "Exit Ternimal Insert mode", noremap = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -657,14 +658,14 @@ local on_attach = function(_, bufnr)
   lspnmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   lspnmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
+  -- See `:help K` for why this keymap
+  lspnmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+  -- lsp_signature keys
   require('lsp_signature').on_attach({
       select_signature_key = '<C-l>',
       toggle_key = '<C-k>',
       move_cursor_key = '<C-j>',
   }, bufnr)
-  -- See `:help K` for why this keymap
-  lspnmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
   lspnmap('<C-k>', require('lsp_signature').toggle_float_win, 'Signature Documentation')
 
   -- Lesser used LSP functionality
