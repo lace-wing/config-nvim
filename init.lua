@@ -418,6 +418,11 @@ require('lazy').setup({
       })
     end,
   },
+  {
+    "mrcjkb/haskell-tools.nvim",
+    version = '^4', -- Recommended
+    lazy = false, -- This plugin is already lazy
+  },
   -- PLUGINS HERE
 })
 
@@ -555,7 +560,8 @@ require('nvim-treesitter.configs').setup {
     'vimdoc',
     'vim',
     'c_sharp',
-    'elixir'
+    'elixir',
+    'haskell'
   },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -726,7 +732,9 @@ local servers = {
 
   tinymist = {},
 
-  elixirls = {}
+  elixirls = {},
+
+  hls = {}
 }
 -- add nil_ls if nix exists
 -- if vim.fn.executable("nix") == 1 then
@@ -936,6 +944,10 @@ dap.configurations.c = {
     cwd = vim.fn.getcwd(),
     stopOnEntry = false,
   }
+}
+
+dap.configurations.haskell = {
+
 }
 
 local dapnmap = function(keys, func, desc)
