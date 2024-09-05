@@ -203,9 +203,9 @@ require('lazy').setup({
 
   {
     'lervag/vimtex',
-    config = function()
-      vim.g.vimtex_doc_handlers = {'vimtex#doc#handlers#texdoc'}
-    end,
+    -- config = function()
+    --   vim.g.vimtex_doc_handlers = {'vimtex#doc#handlers#texdoc'}
+    -- end,
   },
 
   {
@@ -443,7 +443,7 @@ vim.o.mouse = 'a'
 -- indentation
 vim.o.breakindent = true
 vim.o.tabstop = 8
-vim.o.expandtab = false
+vim.o.expandtab = true
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.smarttab = true
@@ -735,7 +735,7 @@ local servers = {
 
   elixirls = {},
 
-  hls = {}
+  hls = {},
 }
 -- add nil_ls if nix exists
 -- if vim.fn.executable("nix") == 1 then
