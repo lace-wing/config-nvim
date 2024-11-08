@@ -61,7 +61,7 @@ require('lazy').setup({
       { 'williamboman/mason.nvim', config = true },
       'williamboman/mason-lspconfig.nvim',
 
-      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
 
       'folke/neodev.nvim',
       'Hoffs/omnisharp-extended-lsp.nvim'
@@ -102,7 +102,8 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
+          { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
         vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
         vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
       end,
@@ -150,7 +151,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  { 'numToStr/Comment.nvim',         opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -183,9 +184,9 @@ require('lazy').setup({
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
-        require("nvim-surround").setup({
-            -- Configuration here, or leave empty to use defaults
-        })
+      require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+      })
     end,
   },
 
@@ -197,20 +198,20 @@ require('lazy').setup({
       vim.fn["mkdp#util#install_sync"]()
     end,
     config = function()
-      vim.keymap.set('n', '<leader>mp', ':MarkdownPreviewToggle<CR>', { desc = '[M]arkdown [P]review' })
+      vim.keymap.set('n', '<leader>pp', ':MarkdownPreviewToggle<CR>', { desc = 'Markdown [P]review' })
     end
   },
 
   {
     'lervag/vimtex',
-    -- config = function()
-    --   vim.g.vimtex_doc_handlers = {'vimtex#doc#handlers#texdoc'}
-    -- end,
+    init = function()
+      vim.g.vimtex_view_method = "skim"
+    end
   },
 
   {
     'laishulu/vim-macos-ime',
-    lazy = false;
+    lazy = false,
     config = function()
       vim.g.macosime_cjk_ime = 'com.apple.inputmethod.SCIM.ITABC'
       vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
@@ -225,19 +226,19 @@ require('lazy').setup({
     'cameron-wags/rainbow_csv.nvim',
     config = true,
     ft = {
-        'csv',
-        'tsv',
-        'csv_semicolon',
-        'csv_whitespace',
-        'csv_pipe',
-        'rfc_csv',
-        'rfc_semicolon'
+      'csv',
+      'tsv',
+      'csv_semicolon',
+      'csv_whitespace',
+      'csv_pipe',
+      'rfc_csv',
+      'rfc_semicolon'
     },
     cmd = {
-        'RainbowDelim',
-        'RainbowDelimSimple',
-        'RainbowDelimQuoted',
-        'RainbowMultiDelim',
+      'RainbowDelim',
+      'RainbowDelimSimple',
+      'RainbowDelimQuoted',
+      'RainbowMultiDelim',
     },
   },
   {
@@ -263,8 +264,8 @@ require('lazy').setup({
     'tigion/nvim-asciidoc-preview',
     ft = { 'asciidoc' },
     config = function()
-      vim.keymap.set('n', '<leader>apo', ':AsciiDocPreview<CR>', { desc = '[A]sciiDoc [P]review [O]pen' })
-      vim.keymap.set('n', '<leader>aps', ':AsciiDocPreviewStop<CR>', { desc = '[AsciiDoc [P]review [S]top]' })
+      vim.keymap.set('n', '<leader>po', ':AsciiDocPreview<CR>', { desc = 'AsciiDoc [P]review [O]pen' })
+      vim.keymap.set('n', '<leader>ps', ':AsciiDocPreviewStop<CR>', { desc = 'AsciiDoc [P]review [S]top]' })
     end
   },
   {
@@ -328,7 +329,7 @@ require('lazy').setup({
     vim.keymap.set("n", "<C-t>", ":Twilight<Enter>", { desc = "Toggle [T]wilight" }),
     opts = {
       dimming = {
-        alpha = 0.33, -- amount of dimming
+        alpha = 0.33,        -- amount of dimming
         -- we try to get the foreground from the highlight groups or fallback color
         term_bg = "#1e2326", -- if guibg=NONE, this will be used to calculate text color
       },
@@ -342,7 +343,7 @@ require('lazy').setup({
     config = function()
       require('sniprun').setup({
         display = {
-            "Classic",
+          "Classic",
         },
       })
       vim.keymap.set("n", "<leader>ff", "<Plug>SnipRun", { silent = true, desc = "SnipRun" })
@@ -360,8 +361,8 @@ require('lazy').setup({
   },
   {
     'richardbizik/nvim-toc',
-    config = function ()
-      require'nvim-toc'.setup()
+    config = function()
+      require 'nvim-toc'.setup()
     end
   },
   {
@@ -383,22 +384,22 @@ require('lazy').setup({
       })
       local wk = require("which-key")
       wk.add({
-        { "<leader>c", group = "ChatGPT" },
+        { "<leader>c",  group = "ChatGPT" },
         { "<leader>cc", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
         {
           mode = { "n", "v" },
-          { "<leader>ca", "<cmd>ChatGPTRun add_tests<CR>", desc = "Add Tests" },
-          { "<leader>cd", "<cmd>ChatGPTRun docstring<CR>", desc = "Docstring" },
-          { "<leader>ce", "<cmd>ChatGPTEditWithInstruction<CR>", desc = "Edit with instruction" },
-          { "<leader>cf", "<cmd>ChatGPTRun fix_bugs<CR>", desc = "Fix Bugs" },
-          { "<leader>cg", "<cmd>ChatGPTRun grammar_correction<CR>", desc = "Grammar Correction" },
-          { "<leader>ck", "<cmd>ChatGPTRun keywords<CR>", desc = "Keywords" },
+          { "<leader>ca", "<cmd>ChatGPTRun add_tests<CR>",                 desc = "Add Tests" },
+          { "<leader>cd", "<cmd>ChatGPTRun docstring<CR>",                 desc = "Docstring" },
+          { "<leader>ce", "<cmd>ChatGPTEditWithInstruction<CR>",           desc = "Edit with instruction" },
+          { "<leader>cf", "<cmd>ChatGPTRun fix_bugs<CR>",                  desc = "Fix Bugs" },
+          { "<leader>cg", "<cmd>ChatGPTRun grammar_correction<CR>",        desc = "Grammar Correction" },
+          { "<leader>ck", "<cmd>ChatGPTRun keywords<CR>",                  desc = "Keywords" },
           { "<leader>cl", "<cmd>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
-          { "<leader>co", "<cmd>ChatGPTRun optimize_code<CR>", desc = "Optimize Code" },
-          { "<leader>cr", "<cmd>ChatGPTRun roxygen_edit<CR>", desc = "Roxygen Edit" },
-          { "<leader>cs", "<cmd>ChatGPTRun summarize<CR>", desc = "Summarize" },
-          { "<leader>ct", "<cmd>ChatGPTRun translate<CR>", desc = "Translate" },
-          { "<leader>cx", "<cmd>ChatGPTRun explain_code<CR>", desc = "Explain Code" },
+          { "<leader>co", "<cmd>ChatGPTRun optimize_code<CR>",             desc = "Optimize Code" },
+          { "<leader>cr", "<cmd>ChatGPTRun roxygen_edit<CR>",              desc = "Roxygen Edit" },
+          { "<leader>cs", "<cmd>ChatGPTRun summarize<CR>",                 desc = "Summarize" },
+          { "<leader>ct", "<cmd>ChatGPTRun translate<CR>",                 desc = "Translate" },
+          { "<leader>cx", "<cmd>ChatGPTRun explain_code<CR>",              desc = "Explain Code" },
         },
       })
     end,
@@ -421,8 +422,26 @@ require('lazy').setup({
   {
     "mrcjkb/haskell-tools.nvim",
     version = '^4', -- Recommended
-    lazy = false, -- This plugin is already lazy
+    lazy = false,   -- This plugin is already lazy
   },
+  {
+    'stevearc/overseer.nvim',
+  },
+  {
+    'chomosuke/typst-preview.nvim',
+    ft = 'typst',
+    version = '0.3.*',
+    build = function() require 'typst-preview'.update() end,
+    opts = {
+      dependencies_bin = {
+        ['typst-preview'] = "tinymist",
+      },
+    },
+    config = function()
+      require 'typst-preview'.setup()
+      vim.keymap.set('n', '<leader>pp', ':TypstPreviewToggle<CR>', { desc = 'Typst [P]review' })
+    end
+  }
   -- PLUGINS HERE
 })
 
@@ -662,9 +681,9 @@ local on_attach = function(_, bufnr)
   lspnmap('K', vim.lsp.buf.hover, 'Hover Documentation')
   -- lsp_signature keys
   require('lsp_signature').on_attach({
-      select_signature_key = '<C-l>',
-      toggle_key = '<C-k>',
-      move_cursor_key = '<C-j>',
+    select_signature_key = '<C-l>',
+    toggle_key = '<C-k>',
+    move_cursor_key = '<C-j>',
   }, bufnr)
   lspnmap('<C-k>', require('lsp_signature').toggle_float_win, 'Signature Documentation')
 
@@ -694,8 +713,8 @@ local servers = {
   clangd = {},
   pyright = {},
   rust_analyzer = {},
-  tsserver = {},
-  html = { filetypes = { 'html', 'twig', 'hbs'} },
+  ts_ls = {},
+  html = { filetypes = { 'html', 'twig', 'hbs' } },
 
   lua_ls = {
     Lua = {
@@ -716,11 +735,11 @@ local servers = {
     -- enable_ms_build_load_projects_on_demand = true,
   },
 
-  typst_lsp = {
-    filetypes = { 'typst' },
-    exportPdf = 'onType',
-    vim.filetype.add({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
-  },
+  -- typst_lsp = {
+  --   filetypes = { 'typst' },
+  --   exportPdf = 'onType',
+  --   vim.filetype.add({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
+  -- },
 
   sqlls = {},
 
@@ -731,11 +750,17 @@ local servers = {
 
   zls = {},
 
-  tinymist = {},
+  tinymist = {
+    filetypes = { 'typst' },
+    exportPdf = 'onType',
+    formatterMode = "typstyle",
+  },
 
   elixirls = {},
 
   hls = {},
+
+  arduino_language_server = {}
 }
 -- add nil_ls if nix exists
 -- if vim.fn.executable("nix") == 1 then
@@ -768,6 +793,14 @@ mason_lspconfig.setup_handlers {
       on_attach = on_attach,
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
+      -- single file mode
+      root_dir = function (filename, bufnr)
+        local p = vim.fn.finddir(".git", ".;")
+        if (p == "") then
+          return vim.fn.getcwd()
+        end
+        return p
+      end
     }
   end
 }
@@ -779,7 +812,7 @@ local sp_servers = {
 local nvim_lspconfig = require 'lspconfig'
 local sp_server_names = vim.tbl_keys(sp_servers)
 
-for i=1,#sp_server_names do
+for i = 1, #sp_server_names do
   nvim_lspconfig[sp_server_names[i]].setup {
     settings = sp_servers[sp_server_names[i]],
     filetypes = (sp_servers[sp_server_names[i]] or {}).filetypes,
@@ -865,36 +898,36 @@ dap.adapters.coreclr = {
 }
 
 vim.g.dotnet_build_project = function()
-    local default_path = vim.fn.getcwd() .. '/'
-    if vim.g['dotnet_last_proj_path'] ~= nil then
-        default_path = vim.g['dotnet_last_proj_path']
-    end
-    local path = vim.fn.input('Path to your *proj file: ', default_path, 'file')
-    vim.g['dotnet_last_proj_path'] = path
-    local cmd = 'dotnet build ' .. '\"' .. path ..  '\"' .. ' > ~/dotnet-build.log'--/dev/null'
-    print('\nCmd to execute: ' .. cmd)
-    local f = os.execute(cmd)
-    if f == 0 then
-        print('\nBuild: ✔️ ')
-    else
-        print('\nBuild: ❌ (code: ' .. f .. ')')
-    end
+  local default_path = vim.fn.getcwd() .. '/'
+  if vim.g['dotnet_last_proj_path'] ~= nil then
+    default_path = vim.g['dotnet_last_proj_path']
+  end
+  local path = vim.fn.input('Path to your *proj file: ', default_path, 'file')
+  vim.g['dotnet_last_proj_path'] = path
+  local cmd = 'dotnet build ' .. '\"' .. path .. '\"' .. ' > ~/dotnet-build.log' --/dev/null'
+  print('\nCmd to execute: ' .. cmd)
+  local f = os.execute(cmd)
+  if f == 0 then
+    print('\nBuild: ✔️ ')
+  else
+    print('\nBuild: ❌ (code: ' .. f .. ')')
+  end
 end
 
 vim.g.dotnet_get_dll_path = function()
-    local request = function()
-        return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/bin/Debug/', 'file')
-    end
+  local request = function()
+    return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+  end
 
-    if vim.g['dotnet_last_dll_path'] == nil then
-        vim.g['dotnet_last_dll_path'] = request()
-    else
-        if vim.fn.confirm('Do you want to change the path to dll?\n' .. vim.g['dotnet_last_dll_path'], '&yes\n&no', 2) == 1 then
-            vim.g['dotnet_last_dll_path'] = request()
-        end
+  if vim.g['dotnet_last_dll_path'] == nil then
+    vim.g['dotnet_last_dll_path'] = request()
+  else
+    if vim.fn.confirm('Do you want to change the path to dll?\n' .. vim.g['dotnet_last_dll_path'], '&yes\n&no', 2) == 1 then
+      vim.g['dotnet_last_dll_path'] = request()
     end
+  end
 
-    return vim.g['dotnet_last_dll_path']
+  return vim.g['dotnet_last_dll_path']
 end
 
 dap.configurations.cs = {
@@ -919,8 +952,6 @@ dap.configurations.cs = {
   }, --TODO make it work
 }
 
-local codelldb_root = require('mason-registry').get_package("codelldb"):get_install_path() .. "/extension/"
-local codelldb_path = codelldb_root .. "adapter/codelldb"
 -- local liblldb_path = codelldb_root .. "lldb/lib/liblldb.so"
 local codelldb_port = '13000'
 dap.adapters.codelldb = {
@@ -928,7 +959,7 @@ dap.adapters.codelldb = {
   port = codelldb_port,
   host = "127.0.0.1",
   executable = {
-    command = codelldb_path,
+    command = "codelldb",
     args = { "--port", codelldb_port },
     -- args = { "--liblldb", liblldb_path, "--port", codelldb_port },
   },
@@ -939,7 +970,7 @@ dap.configurations.c = {
     name = 'Launch',
     type = 'codelldb',
     request = 'launch',
-    program = function ()
+    program = function()
       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
     end,
     cwd = vim.fn.getcwd(),
