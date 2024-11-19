@@ -412,20 +412,20 @@ require('lazy').setup({
     dependencies = {
       "mfussenegger/nvim-lint",
     },
-    config = function()
-      require('tcl').setup()
-      vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
-        callback = function() require('lint').try_lint() end,
-      })
-    end,
   },
   {
     "mrcjkb/haskell-tools.nvim",
     version = '^4', -- Recommended
     lazy = false,   -- This plugin is already lazy
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+    init = function()
+      vim.g.haskell_tools = {}
+    end
   },
   {
-    'stevearc/overseer.nvim',
+    -- 'stevearc/overseer.nvim',
   },
   {
     'chomosuke/typst-preview.nvim',
@@ -441,7 +441,13 @@ require('lazy').setup({
       require 'typst-preview'.setup()
       vim.keymap.set('n', '<leader>pp', ':TypstPreviewToggle<CR>', { desc = 'Typst [P]review' })
     end
-  }
+  },
+  {
+    'github/copilot.vim'
+  },
+  {
+    'nvim-treesitter/nvim-treesitter-context'
+  },
   -- PLUGINS HERE
 })
 
@@ -487,8 +493,6 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
-vim.o.cursorline = true
-
 -- show hidden chars
 vim.o.list = true
 -- vim.o.listchars = "tab:>"
@@ -497,6 +501,9 @@ vim.cmd([[
   hi clear SpellBad
   hi SpellBad cterm=undercurl
   hi SpellBad gui=undercurl
+
+  hi Normal ctermbg=NONE guibg=NONE
+  hi NormalNC ctermbg=NONE guibg=NONE
 ]])
 
 -- [[ Basic Keymaps ]]
@@ -710,7 +717,9 @@ end
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  clangd = {},
+  clangd = {
+    filetypes = { "c", "cpp", "objc", "objcpp" },
+  },
   pyright = {},
   rust_analyzer = {},
   ts_ls = {},
@@ -735,12 +744,6 @@ local servers = {
     -- enable_ms_build_load_projects_on_demand = true,
   },
 
-  -- typst_lsp = {
-  --   filetypes = { 'typst' },
-  --   exportPdf = 'onType',
-  --   vim.filetype.add({ extension = { typ = 'typst' } }), -- it should be a built-in feature but not working for me
-  -- },
-
   sqlls = {},
 
   ltex = {
@@ -758,9 +761,7 @@ local servers = {
 
   elixirls = {},
 
-  hls = {},
-
-  arduino_language_server = {}
+  arduino_language_server = {},
 }
 -- add nil_ls if nix exists
 -- if vim.fn.executable("nix") == 1 then
@@ -794,7 +795,7 @@ mason_lspconfig.setup_handlers {
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
       -- single file mode
-      root_dir = function (filename, bufnr)
+      root_dir = function(filename, bufnr)
         local p = vim.fn.finddir(".git", ".;")
         if (p == "") then
           return vim.fn.getcwd()
