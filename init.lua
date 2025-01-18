@@ -29,6 +29,13 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local lspnmap = function(keys, func, desc)
+  if desc then
+    desc = 'LSP: ' .. desc
+  end
+  vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+end
+
 local function charcount()
   local wc = vim.fn.wordcount()
   return (wc['visual_chars'] and wc['visual_chars'] or wc['chars']) .. ' chars'
@@ -109,7 +116,6 @@ require('lazy').setup({
       end,
     },
   },
-
   {
     'neanias/everforest-nvim',
     lazy = false,
@@ -122,7 +128,6 @@ require('lazy').setup({
       vim.cmd.colorscheme 'everforest'
     end,
   },
-
   {
     'nvim-lualine/lualine.nvim',
     opts = {
@@ -174,7 +179,6 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
-      "nushell/tree-sitter-nu",
     },
     build = ':TSUpdate',
   },
@@ -256,6 +260,10 @@ require('lazy').setup({
   },
   {
     'rcarriga/nvim-dap-ui',
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "nvim-neotest/nvim-nio"
+    }
     -- config = function ()
     --   require('dapui').setup()
     -- end
@@ -368,42 +376,42 @@ require('lazy').setup({
   {
     "windwp/nvim-ts-autotag"
   },
-  {
-    "jackmort/chatgpt.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "folke/trouble.nvim",
-      "nvim-telescope/telescope.nvim"
-    },
-    config = function()
-      require("chatgpt").setup({
-        openai_params = {
-          model = "gpt-4o",
-        }
-      })
-      local wk = require("which-key")
-      wk.add({
-        { "<leader>c",  group = "ChatGPT" },
-        { "<leader>cc", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
-        {
-          mode = { "n", "v" },
-          { "<leader>ca", "<cmd>ChatGPTRun add_tests<CR>",                 desc = "Add Tests" },
-          { "<leader>cd", "<cmd>ChatGPTRun docstring<CR>",                 desc = "Docstring" },
-          { "<leader>ce", "<cmd>ChatGPTEditWithInstruction<CR>",           desc = "Edit with instruction" },
-          { "<leader>cf", "<cmd>ChatGPTRun fix_bugs<CR>",                  desc = "Fix Bugs" },
-          { "<leader>cg", "<cmd>ChatGPTRun grammar_correction<CR>",        desc = "Grammar Correction" },
-          { "<leader>ck", "<cmd>ChatGPTRun keywords<CR>",                  desc = "Keywords" },
-          { "<leader>cl", "<cmd>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
-          { "<leader>co", "<cmd>ChatGPTRun optimize_code<CR>",             desc = "Optimize Code" },
-          { "<leader>cr", "<cmd>ChatGPTRun roxygen_edit<CR>",              desc = "Roxygen Edit" },
-          { "<leader>cs", "<cmd>ChatGPTRun summarize<CR>",                 desc = "Summarize" },
-          { "<leader>ct", "<cmd>ChatGPTRun translate<CR>",                 desc = "Translate" },
-          { "<leader>cx", "<cmd>ChatGPTRun explain_code<CR>",              desc = "Explain Code" },
-        },
-      })
-    end,
-  },
+  -- {
+  --   "jackmort/chatgpt.nvim",
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "folke/trouble.nvim",
+  --     "nvim-telescope/telescope.nvim"
+  --   },
+  --   config = function()
+  --     require("chatgpt").setup({
+  --       openai_params = {
+  --         model = "gpt-4o",
+  --       }
+  --     })
+  --     local wk = require("which-key")
+  --     wk.add({
+  --       { "<leader>c",  group = "ChatGPT" },
+  --       { "<leader>cc", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
+  --       {
+  --         mode = { "n", "v" },
+  --         { "<leader>ca", "<cmd>ChatGPTRun add_tests<CR>",                 desc = "Add Tests" },
+  --         { "<leader>cd", "<cmd>ChatGPTRun docstring<CR>",                 desc = "Docstring" },
+  --         { "<leader>ce", "<cmd>ChatGPTEditWithInstruction<CR>",           desc = "Edit with instruction" },
+  --         { "<leader>cf", "<cmd>ChatGPTRun fix_bugs<CR>",                  desc = "Fix Bugs" },
+  --         { "<leader>cg", "<cmd>ChatGPTRun grammar_correction<CR>",        desc = "Grammar Correction" },
+  --         { "<leader>ck", "<cmd>ChatGPTRun keywords<CR>",                  desc = "Keywords" },
+  --         { "<leader>cl", "<cmd>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
+  --         { "<leader>co", "<cmd>ChatGPTRun optimize_code<CR>",             desc = "Optimize Code" },
+  --         { "<leader>cr", "<cmd>ChatGPTRun roxygen_edit<CR>",              desc = "Roxygen Edit" },
+  --         { "<leader>cs", "<cmd>ChatGPTRun summarize<CR>",                 desc = "Summarize" },
+  --         { "<leader>ct", "<cmd>ChatGPTRun translate<CR>",                 desc = "Translate" },
+  --         { "<leader>cx", "<cmd>ChatGPTRun explain_code<CR>",              desc = "Explain Code" },
+  --       },
+  --     })
+  --   end,
+  -- },
   {
     "mfussenegger/nvim-lint",
   },
@@ -422,10 +430,15 @@ require('lazy').setup({
     },
     init = function()
       vim.g.haskell_tools = {}
-    end
+    end,
   },
   {
-    -- 'stevearc/overseer.nvim',
+    'stevearc/overseer.nvim',
+    config = function()
+      require('overseer').setup({
+        templates = { "builtin"} --, "user.watch_typst" },
+      })
+    end
   },
   {
     'chomosuke/typst-preview.nvim',
@@ -447,6 +460,55 @@ require('lazy').setup({
   },
   {
     'nvim-treesitter/nvim-treesitter-context'
+  },
+  {
+    'apple/pkl-neovim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+    },
+  },
+  {
+    "folke/trouble.nvim",
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = "Trouble",
+    keys = {
+      {
+        "<leader>xx",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
+      },
+      {
+        "<leader>xX",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
+      },
+      {
+        "<leader>xs",
+        "<cmd>Trouble symbols toggle focus=false<cr>",
+        desc = "Symbols (Trouble)",
+      },
+      {
+        "<leader>xl",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      {
+        "<leader>xL",
+        "<cmd>Trouble loclist toggle<cr>",
+        desc = "Location List (Trouble)",
+      },
+      {
+        "<leader>xQ",
+        "<cmd>Trouble qflist toggle<cr>",
+        desc = "Quickfix List (Trouble)",
+      },
+    },
+  },
+  {
+    'kevinhwang91/promise-async',
+    dependencies = {
+      'kevinhwang91/promise-async'
+    },
   },
   -- PLUGINS HERE
 })
@@ -524,8 +586,16 @@ vim.keymap.set('n', '<leader>tp', ':tabprevious<CR>', { desc = '[T]ab [P]revious
 vim.keymap.set('n', '<leader>tq', ':tabclose<CR>', { desc = '[T]ab [Q]uit' })
 
 vim.keymap.set('n', 'Z', 'ZZ', { desc = '[Z]Z' })
+-- Quick terminal normal mode
 vim.keymap.set('t', '<ESC>', '<C-\\><C-n>', { desc = "Exit Ternimal Insert mode", noremap = true })
-
+-- <C-w> in terminal mode
+-- <C-\><C-o> for a command in terminal mode
+vim.keymap.set('t', '<C-w>', '<C-\\><C-o><C-w>', { desc = "Exit Ternimal Insert mode", noremap = true })
+-- Enter terminal insert mode on enter window
+vim.cmd([[
+  autocmd BufWinEnter,BufEnter term://* startinsert
+  autocmd BufWinLeave,BufLeave term://* stopinsert
+]])
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -576,7 +646,8 @@ vim.keymap.set('n', 'gd', require('omnisharp_extended').telescope_lsp_definition
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c',
+  ensure_installed = {
+    'c',
     'cpp',
     'go',
     'lua',
@@ -588,11 +659,12 @@ require('nvim-treesitter.configs').setup {
     'vim',
     'c_sharp',
     'elixir',
-    'haskell'
+    'haskell',
+    'pkl',
   },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-  auto_install = true,
+  auto_install = false,
 
   highlight = { enable = true },
   indent = { enable = true },
@@ -659,6 +731,16 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
+-- lsp_signature keys
+local on_attach_sig_help = function(_, bufnr)
+  require('lsp_signature').on_attach({
+    select_signature_key = '<C-l>',
+    toggle_key = '<C-k>',
+    move_cursor_key = '<C-j>',
+  }, bufnr)
+  lspnmap('<C-k>', require('lsp_signature').toggle_float_win, 'Signature Documentation')
+end
+
 local on_attach = function(_, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
   -- to define small helper and utility functions so you don't have to repeat yourself
@@ -666,14 +748,6 @@ local on_attach = function(_, bufnr)
   --
   -- In this case, we create a function that lets us more easily define mappings specific
   -- for LSP related items. It sets the mode, buffer and description for us each time.
-  local lspnmap = function(keys, func, desc)
-    if desc then
-      desc = 'LSP: ' .. desc
-    end
-
-    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-  end
-
   lspnmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   lspnmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
@@ -686,13 +760,6 @@ local on_attach = function(_, bufnr)
 
   -- See `:help K` for why this keymap
   lspnmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  -- lsp_signature keys
-  require('lsp_signature').on_attach({
-    select_signature_key = '<C-l>',
-    toggle_key = '<C-k>',
-    move_cursor_key = '<C-j>',
-  }, bufnr)
-  lspnmap('<C-k>', require('lsp_signature').toggle_float_win, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   lspnmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -755,13 +822,15 @@ local servers = {
 
   tinymist = {
     filetypes = { 'typst' },
-    exportPdf = 'onType',
+    exportPdf = 'onDocumentHasTitle',
     formatterMode = "typstyle",
   },
 
   elixirls = {},
 
-  arduino_language_server = {},
+  arduino_language_server = {
+    -- cmd = { "~/src/arduino-language-server/arduino-language-server" },
+  },
 }
 -- add nil_ls if nix exists
 -- if vim.fn.executable("nix") == 1 then
@@ -791,13 +860,24 @@ mason_lspconfig.setup_handlers {
   function(server_name)
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
-      on_attach = on_attach,
+      on_init = function(client, bufnr)
+        if servers[server_name].on_init then
+          servers[server_name].on_init(client, bufnr)
+        end
+      end,
+      on_attach = function(client, bufnr)
+        on_attach(client, bufnr)
+        on_attach_sig_help(client, bufnr)
+        if servers[server_name].on_attach then
+          servers[server_name].on_attach(client, bufnr)
+        end
+      end,
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
       -- single file mode
       root_dir = function(filename, bufnr)
-        local p = vim.fn.finddir(".git", ".;")
-        if (p == "") then
+        local p = require('lspconfig.util').root_pattern('.git')(filename)
+        if (p == nil) then
           return vim.fn.getcwd()
         end
         return p
@@ -891,6 +971,9 @@ cmp.setup.filetype(
 -- nvim-dap
 -- config for debugger
 local dap = require('dap')
+
+require('dap.ext.vscode').load_launchjs() --TODO not working
+
 
 dap.adapters.coreclr = {
   type = 'executable',
