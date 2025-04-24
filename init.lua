@@ -11,6 +11,14 @@ vim.opt.rtp:append('/usr/local/opt/fzf')
 vim.opt.path:append('**')
 vim.opt.shell = 'bash'
 
+-- filetype settings
+vim.filetype.add {
+  pattern = {
+    ['.*.xdc'] = 'xdc',
+    ['.*.upf'] = 'upf',
+  },
+}
+
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -330,9 +338,6 @@ require('lazy').setup({
     end,
   } ]]
   {
-    'LhKipp/nvim-nu'
-  },
-  {
     "folke/twilight.nvim",
     vim.keymap.set("n", "<C-t>", ":Twilight<Enter>", { desc = "Toggle [T]wilight" }),
     opts = {
@@ -415,12 +420,12 @@ require('lazy').setup({
   {
     "mfussenegger/nvim-lint",
   },
-  {
-    "nat-418/tcl.nvim",
-    dependencies = {
-      "mfussenegger/nvim-lint",
-    },
-  },
+  -- {
+  --   "nat-418/tcl.nvim",
+  --   dependencies = {
+  --     "mfussenegger/nvim-lint",
+  --   },
+  -- },
   {
     "mrcjkb/haskell-tools.nvim",
     version = '^4', -- Recommended
@@ -436,7 +441,7 @@ require('lazy').setup({
     'stevearc/overseer.nvim',
     config = function()
       require('overseer').setup({
-        templates = { "builtin"} --, "user.watch_typst" },
+        templates = { "builtin" } --, "user.watch_typst" },
       })
     end
   },
@@ -456,7 +461,7 @@ require('lazy').setup({
     end
   },
   {
-    'github/copilot.vim'
+    -- 'github/copilot.vim'
   },
   {
     'nvim-treesitter/nvim-treesitter-context'
@@ -510,6 +515,12 @@ require('lazy').setup({
       'kevinhwang91/promise-async'
     },
   },
+  {
+    'tranvansang/octave.vim'
+  },
+  {
+    'wolandark/vim-espeak'
+  }
   -- PLUGINS HERE
 })
 
@@ -822,7 +833,7 @@ local servers = {
 
   tinymist = {
     filetypes = { 'typst' },
-    exportPdf = 'onDocumentHasTitle',
+    exportPdf = 'onSave',
     formatterMode = "typstyle",
   },
 
