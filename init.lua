@@ -413,7 +413,7 @@ require('lazy').setup({
             function()
               local lang = vim.fn.input("Translate to: ")
               if lang ~= "" then
-                lang = "--lang=" .. lang
+                lang = " --lang=" .. lang
               end
               vim.api.nvim_command("ChatGPTRun translate" .. lang)
             end,

@@ -2,7 +2,7 @@
   "translate": {
     "type": "chat",
     "opts": {
-      "template": "Translate this into {{lang}}:\n\n{{input}}",
+      "template": "Prioritizing practices in the target language, translate this into nartual {{lang}}:\n\n{{input}}",
       "strategy": "append",
       "params": {
         "model": "gpt-4o",
