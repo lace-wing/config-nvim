@@ -9,7 +9,7 @@ vim.opt.clipboard = { 'unnamedplus' }
 -- some env settings
 vim.opt.rtp:append('/usr/local/opt/fzf')
 vim.opt.path:append('**')
-vim.opt.shell = 'bash'
+vim.opt.shell = 'nu'
 
 -- filetype settings
 vim.filetype.add {
@@ -36,13 +36,6 @@ if not vim.loop.fs_stat(lazypath) then
   }
 end
 vim.opt.rtp:prepend(lazypath)
-
-local lspnmap = function(keys, func, desc)
-  if desc then
-    desc = 'LSP: ' .. desc
-  end
-  vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-end
 
 local function charcount()
   local wc = vim.fn.wordcount()
@@ -381,42 +374,56 @@ require('lazy').setup({
   {
     "windwp/nvim-ts-autotag"
   },
-  -- {
-  --   "jackmort/chatgpt.nvim",
-  --   dependencies = {
-  --     "MunifTanjim/nui.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "folke/trouble.nvim",
-  --     "nvim-telescope/telescope.nvim"
-  --   },
-  --   config = function()
-  --     require("chatgpt").setup({
-  --       openai_params = {
-  --         model = "gpt-4o",
-  --       }
-  --     })
-  --     local wk = require("which-key")
-  --     wk.add({
-  --       { "<leader>c",  group = "ChatGPT" },
-  --       { "<leader>cc", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
-  --       {
-  --         mode = { "n", "v" },
-  --         { "<leader>ca", "<cmd>ChatGPTRun add_tests<CR>",                 desc = "Add Tests" },
-  --         { "<leader>cd", "<cmd>ChatGPTRun docstring<CR>",                 desc = "Docstring" },
-  --         { "<leader>ce", "<cmd>ChatGPTEditWithInstruction<CR>",           desc = "Edit with instruction" },
-  --         { "<leader>cf", "<cmd>ChatGPTRun fix_bugs<CR>",                  desc = "Fix Bugs" },
-  --         { "<leader>cg", "<cmd>ChatGPTRun grammar_correction<CR>",        desc = "Grammar Correction" },
-  --         { "<leader>ck", "<cmd>ChatGPTRun keywords<CR>",                  desc = "Keywords" },
-  --         { "<leader>cl", "<cmd>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
-  --         { "<leader>co", "<cmd>ChatGPTRun optimize_code<CR>",             desc = "Optimize Code" },
-  --         { "<leader>cr", "<cmd>ChatGPTRun roxygen_edit<CR>",              desc = "Roxygen Edit" },
-  --         { "<leader>cs", "<cmd>ChatGPTRun summarize<CR>",                 desc = "Summarize" },
-  --         { "<leader>ct", "<cmd>ChatGPTRun translate<CR>",                 desc = "Translate" },
-  --         { "<leader>cx", "<cmd>ChatGPTRun explain_code<CR>",              desc = "Explain Code" },
-  --       },
-  --     })
-  --   end,
-  -- },
+  {
+    "jackmort/chatgpt.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "folke/trouble.nvim",
+      "nvim-telescope/telescope.nvim"
+    },
+    config = function()
+      require("chatgpt").setup({
+        actions_paths = {
+          vim.fn.stdpath('config') .. '/data/chatgpt/actions.json',
+        },
+        openai_params = {
+          model = "gpt-4o",
+        }
+      })
+      local wk = require("which-key")
+      wk.add({
+        { "<leader>c",  group = "ChatGPT" },
+        { "<leader>cc", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
+        {
+          mode = { "n", "v" },
+          { "<leader>ca", "<cmd>ChatGPTRun add_tests<CR>",                 desc = "Add Tests" },
+          { "<leader>cd", "<cmd>ChatGPTRun docstring<CR>",                 desc = "Docstring" },
+          { "<leader>ce", "<cmd>ChatGPTEditWithInstruction<CR>",           desc = "Edit with instruction" },
+          { "<leader>cf", "<cmd>ChatGPTRun fix_bugs<CR>",                  desc = "Fix Bugs" },
+          { "<leader>cg", "<cmd>ChatGPTRun grammar_correction<CR>",        desc = "Grammar Correction" },
+          { "<leader>ck", "<cmd>ChatGPTRun keywords<CR>",                  desc = "Keywords" },
+          { "<leader>cl", "<cmd>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
+          { "<leader>co", "<cmd>ChatGPTRun optimize_code<CR>",             desc = "Optimize Code" },
+          { "<leader>cr", "<cmd>ChatGPTRun roxygen_edit<CR>",              desc = "Roxygen Edit" },
+          { "<leader>cs", "<cmd>ChatGPTRun summarize<CR>",                 desc = "Summarize" },
+          -- { "<leader>ct", "<cmd>ChatGPTRun translate<CR>",                 desc = "Translate" },
+          {
+            "<leader>ct",
+            function()
+              local lang = vim.fn.input("Translate to: ")
+              if lang ~= "" then
+                lang = "--lang=" .. lang
+              end
+              vim.api.nvim_command("ChatGPTRun translate" .. lang)
+            end,
+            desc = "Translate"
+          },
+          { "<leader>cx", "<cmd>ChatGPTRun explain_code<CR>", desc = "Explain Code" },
+        },
+      })
+    end,
+  },
   {
     "mfussenegger/nvim-lint",
   },
@@ -741,51 +748,8 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- [[ Configure LSP ]]
---  This function gets run when an LSP connects to a particular buffer.
--- lsp_signature keys
-local on_attach_sig_help = function(_, bufnr)
-  require('lsp_signature').on_attach({
-    select_signature_key = '<C-l>',
-    toggle_key = '<C-k>',
-    move_cursor_key = '<C-j>',
-  }, bufnr)
-  lspnmap('<C-k>', require('lsp_signature').toggle_float_win, 'Signature Documentation')
-end
 
-local on_attach = function(_, bufnr)
-  -- NOTE: Remember that lua is a real programming language, and as such it is possible
-  -- to define small helper and utility functions so you don't have to repeat yourself
-  -- many times.
-  --
-  -- In this case, we create a function that lets us more easily define mappings specific
-  -- for LSP related items. It sets the mode, buffer and description for us each time.
-  lspnmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  lspnmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
-  lspnmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  lspnmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-  lspnmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-  lspnmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-  lspnmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  lspnmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
-  -- See `:help K` for why this keymap
-  lspnmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-
-  -- Lesser used LSP functionality
-  lspnmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-  lspnmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-  lspnmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-  lspnmap('<leader>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, '[W]orkspace [L]ist Folders')
-
-  -- Create a command `:Format` local to the LSP buffer
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-    vim.lsp.buf.format()
-  end, { desc = 'Format current buffer with LSP' })
-end
-
+local lsp = require 'lsp'
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 --
@@ -877,8 +841,8 @@ mason_lspconfig.setup_handlers {
         end
       end,
       on_attach = function(client, bufnr)
-        on_attach(client, bufnr)
-        on_attach_sig_help(client, bufnr)
+        lsp.on_attach(client, bufnr)
+        lsp.on_attach_sig_help(client, bufnr)
         if servers[server_name].on_attach then
           servers[server_name].on_attach(client, bufnr)
         end
@@ -898,16 +862,24 @@ mason_lspconfig.setup_handlers {
 }
 
 -- non-mason-lspconfig setup
+local nvim_lspconfig = require 'lspconfig'
+-- Check if it's already defined for when reloading this file.
 local sp_servers = {
   nushell = {},
 }
-local nvim_lspconfig = require 'lspconfig'
 local sp_server_names = vim.tbl_keys(sp_servers)
 
 for i = 1, #sp_server_names do
   nvim_lspconfig[sp_server_names[i]].setup {
     settings = sp_servers[sp_server_names[i]],
     filetypes = (sp_servers[sp_server_names[i]] or {}).filetypes,
+    on_attach = function(client, bufnr)
+      lsp.on_attach(client, bufnr)
+      lsp.on_attach_sig_help(client, bufnr)
+      if sp_servers[sp_server_names[i]].on_attach then
+        sp_servers[sp_server_names[i]].on_attach(client, bufnr)
+      end
+    end,
   }
 end
 

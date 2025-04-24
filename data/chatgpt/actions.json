@@ -1,0 +1,20 @@
+{
+  "translate": {
+    "type": "chat",
+    "opts": {
+      "template": "Translate this into {{lang}}:\n\n{{input}}",
+      "strategy": "append",
+      "params": {
+        "model": "gpt-4o",
+        "temperature": 0.5
+      }
+    },
+    "args": {
+      "lang": {
+        "type": "string",
+        "optional": "true",
+        "default": "English"
+      }
+    }
+  }
+}
