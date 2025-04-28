@@ -222,11 +222,16 @@ require('lazy').setup({
       vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
     end,
   },
-
+  -- {
+  --   'jiangmiao/auto-pairs',
+  -- },
   {
-    'jiangmiao/auto-pairs',
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = true
+    -- use opts = {} for passing setup options
+    -- this is equivalent to setup({}) function
   },
-
   {
     'cameron-wags/rainbow_csv.nvim',
     config = true,
@@ -437,6 +442,7 @@ require('lazy').setup({
     "mrcjkb/haskell-tools.nvim",
     version = '^4', -- Recommended
     lazy = false,   -- This plugin is already lazy
+    ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
     dependencies = {
       'nvim-telescope/telescope.nvim',
     },
