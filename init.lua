@@ -9,7 +9,7 @@ vim.opt.clipboard = { 'unnamedplus' }
 -- some env settings
 vim.opt.rtp:append('/usr/local/opt/fzf')
 vim.opt.path:append('**')
-vim.opt.shell = 'nu'
+vim.opt.shell = 'bash'
 
 -- filetype settings
 vim.filetype.add {
@@ -484,6 +484,11 @@ require('lazy').setup({
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
     },
+    config = function ()
+      vim.g.pkl_neovim = {
+        start_command = { "java", "-jar", "/Users/steve/src/pkl-lsp/bin/pkl-lsp-0.3.2.jar" },
+      }
+    end
   },
   {
     "folke/trouble.nvim",
