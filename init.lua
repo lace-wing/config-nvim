@@ -37,6 +37,14 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local function get_root()
+  local root = vim.fs.root(0, '.git')
+  if root ~= "" then
+    return root
+  end
+  return vim.fn.getcwd(0)
+end
+
 local function charcount()
   local wc = vim.fn.wordcount()
   return (wc['visual_chars'] and wc['visual_chars'] or wc['chars']) .. ' chars'
@@ -66,10 +74,10 @@ require('lazy').setup({
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      { 'williamboman/mason.nvim', config = true },
-      'williamboman/mason-lspconfig.nvim',
+      { 'williamboman/mason.nvim',           config = true,     version = '^1.0.0' },
+      { 'williamboman/mason-lspconfig.nvim', version = '^1.0.0' },
 
-      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
+      { 'j-hui/fidget.nvim',                 tag = 'legacy',    opts = {} },
 
       'folke/neodev.nvim',
       'Hoffs/omnisharp-extended-lsp.nvim'
@@ -461,15 +469,15 @@ require('lazy').setup({
   {
     'chomosuke/typst-preview.nvim',
     ft = 'typst',
-    version = '0.3.*',
+    version = '1.*',
     build = function() require 'typst-preview'.update() end,
-    opts = {
-      dependencies_bin = {
-        ['typst-preview'] = "tinymist",
-      },
-    },
     config = function()
-      require 'typst-preview'.setup()
+      require 'typst-preview'.setup {
+        dependencies_bin = {
+          ['tinymist'] = 'tinymist'
+        },
+        get_root = get_root
+      }
       vim.keymap.set('n', '<leader>pp', ':TypstPreviewToggle<CR>', { desc = 'Typst [P]review' })
     end
   },
@@ -484,7 +492,7 @@ require('lazy').setup({
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
     },
-    config = function ()
+    config = function()
       vim.g.pkl_neovim = {
         start_command = { "java", "-jar", "/Users/steve/src/pkl-lsp/bin/pkl-lsp-0.3.2.jar" },
       }
@@ -538,6 +546,76 @@ require('lazy').setup({
   },
   {
     'wolandark/vim-espeak'
+  },
+  -- {
+  --   'nvim-orgmode/orgmode',
+  --   event = 'VeryLazy',
+  --   ft = { 'org' },
+  --   config = function()
+  --     -- Setup orgmode
+  --     require('orgmode').setup({
+  --       org_agenda_files = '~/src/orgfiles/**/*',
+  --       org_default_notes_file = '~/src/orgfiles/refile.org',
+  --     })
+  --
+  --     -- NOTE: If you are using nvim-treesitter with ~ensure_installed = "all"~ option
+  --     -- add ~org~ to ignore_install
+  --     require('nvim-treesitter.configs').setup({
+  --       ensure_installed = 'all',
+  --       ignore_install = { 'org' },
+  --     })
+  --   end,
+  -- }
+  {
+    "nvim-neorg/neorg",
+    lazy = false,  -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+    version = "*", -- Pin Neorg to the latest stable release
+    config = function()
+      require('neorg').setup({
+        load = {
+          ["core.defaults"] = {},
+          ["core.autocommands"] = {},
+          ["core.integrations.treesitter"] = {},
+          ["core.concealer"] = {},
+          ["core.export"] = {},
+          ["core.export.markdown"] = {}
+        }
+      })
+    end,
+  },
+  -- {
+  --   'MRdima98/better-fountain.nvim',
+  --   dependencies = { 'kblin/vim-fountain' },
+  --   config = function()
+  --     -- require('better-fountain').setup()
+  --     vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+  --       pattern = { "*.fountain" },
+  --       callback = function()
+  --         vim.lsp.start({
+  --           name = "better-fountain",
+  --           cmd = { "~/.local/share/nvim/lazy/better-fountain.nvim/lsp/bf_lsp" },
+  --         })
+  --       end
+  --     })
+  --   end
+  -- },
+  {
+    "00msjr/nvim-fountain",
+    ft = "fountain", -- Lazy-load only for fountain files
+    config = function()
+      require("nvim-fountain").setup({
+        -- Optional configuration
+        keymaps = {
+          next_scene = "]]",
+          prev_scene = "[[",
+          uppercase_line = "<S-CR>",
+        },
+        -- Export configuration
+        export = {
+          pdf = { options = "--overwrite --font Courier" },
+        },
+      })
+    end,
   }
   -- PLUGINS HERE
 })
@@ -808,7 +886,7 @@ local servers = {
 
   tinymist = {
     filetypes = { 'typst' },
-    exportPdf = 'onSave',
+    exportPdf = 'never',
     formatterMode = "typstyle",
   },
 
@@ -816,6 +894,15 @@ local servers = {
 
   arduino_language_server = {
     -- cmd = { "~/src/arduino-language-server/arduino-language-server" },
+  },
+
+  bashls = {},
+
+  java_language_server = {},
+
+  svls = {
+    cmd = { "svls" },
+    filetypes = { "verilog", "systemverilog" },
   },
 }
 -- add nil_ls if nix exists
