@@ -900,9 +900,10 @@ local servers = {
 
   java_language_server = {},
 
-  svls = {
-    cmd = { "svls" },
-    filetypes = { "verilog", "systemverilog" },
+  svlangserver = {
+    systemverilog = {
+      launchConfiguration = "verilator -sv -Wall --lint-only --timing"
+    }
   },
 }
 -- add nil_ls if nix exists
