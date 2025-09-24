@@ -1,9 +1,9 @@
-local function get_root()
-	local root = vim.fs.root(0, '.git')
-	if root then
-		return root
-	end
-	return vim.fn.getcwd(0)
+local function get_root_with(fname, bufnr, ...)
+	return vim.fs.root(fname or bufnr, { '.git', ... }) or vim.fn.expand("%:p:h")
+end
+
+local function get_root(...)
+	return get_root_with(_, 0)
 end
 
 local map = vim.keymap.set
@@ -48,7 +48,7 @@ vim.pack.add({
 	{ src = 'https://github.com/nvim-mini/mini.nvim', },
 	{ src = 'https://github.com/folke/which-key.nvim', },
 
-	{ src = 'https://github.com/slugbyte/lackluster.nvim' },
+	{ src = 'https://github.com/bjarneo/pixel.nvim' },
 
 	{ src = 'https://github.com/neovim/nvim-lspconfig' },
 	{ src = 'https://github.com/chomosuke/typst-preview.nvim' },
@@ -84,10 +84,9 @@ require('nvim-treesitter.configs').setup({
 })
 
 require('typst-preview').setup({
-	get_root = get_root
-
+	get_root = get_root,
 })
-map('n', '<leader>tp', ':TypstPreviewToggle<CR>', { desc = 'Typst [P]review' })
+map('n', '<leader>vv', ':TypstPreviewToggle<CR>', { desc = 'Typst [P]review' })
 
 vim.lsp.enable({
 	'lua_ls',
@@ -110,9 +109,7 @@ vim.lsp.config('lua_ls', {
 vim.lsp.config('tinymist', {
 	filetypes = { 'typst' },
 	exportPdf = 'never',
-	formatterMode = "typstyle",
-	get_root = get_root,
-
+	root_dir = function(fname, bufnr) get_root_with(fname, bufnr, 'typst.toml') end,
 })
 
 require('blink-cmp').setup({
@@ -121,31 +118,39 @@ require('blink-cmp').setup({
 			selection = {
 				preselect = false
 			}
-		}
+		},
+		documentation = {
+			auto_show = true,
+			auto_show_delay_ms = 500,
+		},
 	},
 	signature = {
 		enabled = true
 	},
-	documentation = {
-		auto_show = true,
-		auto_show_delay_ms = 500,
-	},
 	fuzzy = { implementation = 'lua' },
+	keymap = {
+		preset = 'default',
+		['<Tab>'] = { 'select_next', 'fallback' },
+		['<S-Tab>'] = { 'select_prev', 'fallback' },
+		['<CR>'] = { 'accept', 'fallback' },
+
+		['<C-k>'] = {},
+	}
 })
 
-vim.cmd("colorscheme lackluster-hack")
+vim.cmd("colorscheme pixel")
 vim.cmd([[
-	hi statusline guibg=NONE
-	hi statuslineNC guibg=NONE
+	hi statusline ctermbg=NONE guibg=NONE
+	hi statuslineNC ctermbg=NONE guibg=NONE
 
-  hi clear SpellBad
-  hi SpellBad gui=undercurl cterm=undercurl
+  "hi clear SpellBad
+  "hi SpellBad gui=undercurl cterm=undercurl
 
-  hi Normal guibg=NONE
-  hi NormalNC guibg=NONE
+  hi Normal ctermbg=NONE guibg=NONE
+  hi NormalNC ctermbg=NONE guibg=NONE
 
-	hi CursorLine guibg=black
-	hi CursorColumn guibg=black
+	hi CursorLine ctermbg=black guibg=black
+	hi CursorColumn ctermbg=black guibg=black
 ]])
 
 map({ 'n', 'v', 'x', }, 'j', 'gj')
