@@ -1,20 +1,15 @@
-local function get_root_with(fname, bufnr, ...)
-	return vim.fs.root(fname or bufnr, { '.git', ... }) or vim.fn.expand("%:p:h")
-end
-
-local function get_root(...)
-	return get_root_with(_, 0)
-end
+local path = require('util.path')
 
 local map = vim.keymap.set
 
 vim.o.swapfile = false
 
 -- vim.opt.rtp:append('/usr/local/opt/fzf')
--- vim.opt.path:append('**')
-vim.opt.shell = 'bash'
+vim.opt.path:append('**')
+vim.opt.shell = 'zsh'
 
 vim.o.undofile = true
+vim.o.ignorecase = true
 vim.o.smartcase = true
 
 vim.o.number = true
@@ -24,8 +19,10 @@ vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 vim.o.smartindent = true
 
-vim.o.cursorcolumn = true
-vim.o.cursorline = true
+vim.o.autocomplete = false
+
+-- vim.o.cursorcolumn = true
+-- vim.o.cursorline = true
 vim.o.signcolumn = 'yes'
 vim.o.winborder = 'single'
 
@@ -48,14 +45,17 @@ vim.pack.add({
 	{ src = 'https://github.com/nvim-mini/mini.nvim', },
 	{ src = 'https://github.com/folke/which-key.nvim', },
 
+	{ src = 'https://github.com/Saghen/blink.cmp' },
+
 	{ src = 'https://github.com/bjarneo/pixel.nvim' },
+	-- { src = 'https://github.com/sainnhe/everforest' },
 
 	{ src = 'https://github.com/neovim/nvim-lspconfig' },
 	{ src = 'https://github.com/chomosuke/typst-preview.nvim' },
 	{ src = 'https://github.com/mason-org/mason.nvim' },
 	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
 
-	{ src = 'https://github.com/Saghen/blink.cmp' }
+	{ src = 'https://github.com/laishulu/vim-macos-ime' },
 })
 
 require('oil').setup()
@@ -70,46 +70,15 @@ require('nvim-treesitter.configs').setup({
 	},
 	indent = { enable = true },
 	auto_install = false,
-	ensure_installed = {
-		'c',
-		'cpp',
-		'go',
-		'lua',
-		'python',
-		'rust',
-		'typescript',
-		'c_sharp',
-		'haskell',
-	}
-})
-
-require('typst-preview').setup({
-	get_root = get_root,
-})
-map('n', '<leader>vv', ':TypstPreviewToggle<CR>', { desc = 'Typst [P]review' })
-
-vim.lsp.enable({
-	'lua_ls',
-	'tinymist',
+	ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', }
 })
 
 require('mason').setup()
 
-vim.lsp.config('lua_ls', {
-	settings = {
-		Lua = {
-			workspace = {
-				library = vim.api.nvim_get_runtime_file('', true)
-			},
-			telemetry = { enable = false },
-		}
-	}
-})
-
-vim.lsp.config('tinymist', {
-	filetypes = { 'typst' },
-	exportPdf = 'never',
-	root_dir = function(fname, bufnr) get_root_with(fname, bufnr, 'typst.toml') end,
+vim.lsp.enable({
+	'lua_ls',
+	'tinymist',
+	'nushell',
 })
 
 require('blink-cmp').setup({
@@ -133,18 +102,36 @@ require('blink-cmp').setup({
 		['<Tab>'] = { 'select_next', 'fallback' },
 		['<S-Tab>'] = { 'select_prev', 'fallback' },
 		['<CR>'] = { 'accept', 'fallback' },
-
 		['<C-k>'] = {},
+	},
+	appearance = {
+		use_nvim_cmp_as_default = true,
 	}
 })
 
+require('typst-preview').setup({
+	get_root = path.get_root,
+})
+map('n', '<leader>vv', ':TypstPreviewToggle<CR>', { desc = 'Typst [P]review' })
+
+vim.g.macosime_cjk_ime = 'com.apple.inputmethod.SCIM.ITABC'
+vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
+
+-- colorscheme
 vim.cmd("colorscheme pixel")
+-- vim.cmd([[
+-- 	let g:everforest_background = 'hard'
+-- 	let g:everforest_better_performance = 1
+-- 	let g:everforest_dim_inactive_windows = 1
+-- 	colorscheme everforest
+-- ]])
+-- highlights
 vim.cmd([[
 	hi statusline ctermbg=NONE guibg=NONE
 	hi statuslineNC ctermbg=NONE guibg=NONE
 
   "hi clear SpellBad
-  "hi SpellBad gui=undercurl cterm=undercurl
+  hi SpellBad gui=undercurl cterm=undercurl
 
   hi Normal ctermbg=NONE guibg=NONE
   hi NormalNC ctermbg=NONE guibg=NONE
@@ -152,6 +139,15 @@ vim.cmd([[
 	hi CursorLine ctermbg=black guibg=black
 	hi CursorColumn ctermbg=black guibg=black
 ]])
+
+local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', {
+	callback = function()
+		vim.highlight.on_yank()
+	end,
+	group = highlight_group,
+	pattern = '*',
+})
 
 map({ 'n', 'v', 'x', }, 'j', 'gj')
 map({ 'n', 'v', 'x', }, 'k', 'gk')
@@ -169,4 +165,16 @@ map('n', '<leader>h', ':Pick help<CR>')
 map('n', '<leader>e', ':Oil<CR>')
 
 map('n', '<leader>lf', vim.lsp.buf.format)
-map('n', '<leader>w', ':write<CR>')
+
+-- map('n', '<C-l>', ':nohlsearch<CR>', { silent = true })
+
+-- Quick terminal normal mode
+map('t', '<ESC>', '<C-\\><C-n>', { desc = "Exit Ternimal Insert mode", noremap = true })
+-- <C-w> in terminal mode
+-- <C-\><C-o> for a command in terminal mode
+map('t', '<C-w>', '<C-\\><C-o><C-w>', { desc = "Exit Ternimal Insert mode", noremap = true })
+-- Enter terminal insert mode on enter window
+vim.cmd([[
+  autocmd BufWinEnter,BufEnter term://* startinsert
+  autocmd BufWinLeave,BufLeave term://* stopinsert
+]])
