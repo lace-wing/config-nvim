@@ -54,6 +54,8 @@ vim.pack.add({
 	{ src = 'https://github.com/chomosuke/typst-preview.nvim' },
 	{ src = 'https://github.com/mason-org/mason.nvim' },
 	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
+	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter-context' },
+	{ src = 'https://github.com/folke/trouble.nvim' },
 
 	{ src = 'https://github.com/laishulu/vim-macos-ime' },
 })
@@ -63,6 +65,8 @@ require('oil').setup()
 require('mini.pick').setup()
 require('mini.pairs').setup()
 require('mini.surround').setup()
+require('mini.git').setup()
+require('mini.diff').setup()
 
 require('nvim-treesitter.configs').setup({
 	highlight = {
@@ -75,10 +79,14 @@ require('nvim-treesitter.configs').setup({
 
 require('mason').setup()
 
+require('trouble').setup()
+
 vim.lsp.enable({
+	'ltex',
 	'lua_ls',
 	'tinymist',
 	'nushell',
+	'svlangserver'
 })
 
 require('blink-cmp').setup({
@@ -149,6 +157,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 	pattern = '*',
 })
 
+map({ 'n', 'v', 'x' }, ';', ':')
+
 map({ 'n', 'v', 'x', }, 'j', 'gj')
 map({ 'n', 'v', 'x', }, 'k', 'gk')
 
@@ -166,7 +176,10 @@ map('n', '<leader>e', ':Oil<CR>')
 
 map('n', '<leader>lf', vim.lsp.buf.format)
 
--- map('n', '<C-l>', ':nohlsearch<CR>', { silent = true })
+map('n', '<leader>xx', '<CMD>Trouble diagnostics toggle<CR>')
+map('n', '<leader>xr', '<CMD>Trouble lsp_references toggle<CR>')
+map('n', '<leader>xs', '<CMD>Trouble symbols toggle<CR>')
+map('n', '<leader>xq', '<CMD>Trouble qflist toggle<CR>')
 
 -- Quick terminal normal mode
 map('t', '<ESC>', '<C-\\><C-n>', { desc = "Exit Ternimal Insert mode", noremap = true })
@@ -178,3 +191,4 @@ vim.cmd([[
   autocmd BufWinEnter,BufEnter term://* startinsert
   autocmd BufWinLeave,BufLeave term://* stopinsert
 ]])
+
