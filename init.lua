@@ -1,12 +1,11 @@
-local path = require('util.path')
-
-local map = vim.keymap.set
+local u = require('util')
+local map = u.vim.map
 
 vim.o.swapfile = false
 
 -- vim.opt.rtp:append('/usr/local/opt/fzf')
 vim.opt.path:append('**')
-vim.opt.shell = 'zsh'
+vim.o.shell = 'zsh'
 
 vim.o.undofile = true
 vim.o.ignorecase = true
@@ -116,11 +115,6 @@ require('blink-cmp').setup({
 		use_nvim_cmp_as_default = true,
 	}
 })
-
-require('typst-preview').setup({
-	get_root = path.get_root,
-})
-map('n', '<leader>vv', ':TypstPreviewToggle<CR>', { desc = 'Typst [P]review' })
 
 vim.g.macosime_cjk_ime = 'com.apple.inputmethod.SCIM.ITABC'
 vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'

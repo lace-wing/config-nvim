@@ -1,5 +1,3 @@
--- local path = require('util.path')
-
 return {
 	cmd = { 'tinymist'},
 	filetypes = { 'typst' },
