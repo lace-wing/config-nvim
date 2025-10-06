@@ -1,6 +1,7 @@
 local M = {
 	vim = require('util.vim'),
 	path = require('util.path'),
+	parse = require('util.parse'),
 }
 
 function M.use (module, force)

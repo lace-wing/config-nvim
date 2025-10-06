@@ -1,5 +1,6 @@
 local u = require('util')
 local map = u.vim.map
+local hi = u.vim.hi
 
 vim.o.swapfile = false
 
@@ -128,26 +129,22 @@ vim.cmd("colorscheme pixel")
 -- 	colorscheme everforest
 -- ]])
 -- highlights
-vim.cmd([[
-	hi statusline ctermbg=NONE guibg=NONE
-	hi statuslineNC ctermbg=NONE guibg=NONE
+hi('statusline', { ctermbg = 'NONE', guibg = 'NONE' })
+hi('statuslineNC', { ctermbg = 'white', guibg = 'NONE' })
 
-  "hi clear SpellBad
-  hi SpellBad gui=undercurl cterm=undercurl
+hi('SpellBad', { gui = 'undercurl', cterm = 'undercurl' })
 
-  hi Normal ctermbg=NONE guibg=NONE
-  hi NormalNC ctermbg=NONE guibg=NONE
+hi('Normal', { ctermbg = 'NONE', guibg = 'NONE' })
+hi('NormalNC', { ctermbg = 'NONE', guibg = 'NONE' })
 
-	hi CursorLine ctermbg=black guibg=black
-	hi CursorColumn ctermbg=black guibg=black
-]])
+hi('CursorLine', { ctermbg = 'black', guibg = 'black' })
+hi('CursorColumn', { ctermbg = 'black', guibg = 'black' })
 
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
 	callback = function()
 		vim.highlight.on_yank()
 	end,
-	group = highlight_group,
+	group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }),
 	pattern = '*',
 })
 
@@ -185,4 +182,3 @@ vim.cmd([[
   autocmd BufWinEnter,BufEnter term://* startinsert
   autocmd BufWinLeave,BufLeave term://* stopinsert
 ]])
-
