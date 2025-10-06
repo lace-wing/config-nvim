@@ -8,7 +8,7 @@ function M.use (module, force)
 	force = force or false
 	for k, v in pairs(module) do
 		if not force and _G[k] then
-			warn('use: skipping duplicate symbol `' .. k .. '`\n')
+			-- vim.notify('use: skipping duplicate symbol `' .. k .. '`\n', vim.log.levels.INFO)
 		else
 			_G[k] = v
 		end
