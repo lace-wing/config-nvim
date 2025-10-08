@@ -82,11 +82,11 @@ require('mason').setup()
 require('trouble').setup()
 
 vim.lsp.enable({
-	'ltex',
 	'lua_ls',
 	'tinymist',
 	'nushell',
-	'svlangserver'
+	'svlangserver',
+	'java-language-server',
 })
 
 require('blink-cmp').setup({
@@ -130,15 +130,12 @@ vim.cmd("colorscheme pixel")
 -- ]])
 -- highlights
 hi('statusline', { ctermbg = 'NONE', guibg = 'NONE' })
-hi('statuslineNC', { ctermbg = 'white', guibg = 'NONE' })
+hi('statuslineNC', { ctermbg = 'NONE', guibg = 'NONE' })
 
 hi('SpellBad', { gui = 'undercurl', cterm = 'undercurl' })
 
 hi('Normal', { ctermbg = 'NONE', guibg = 'NONE' })
 hi('NormalNC', { ctermbg = 'NONE', guibg = 'NONE' })
-
-hi('CursorLine', { ctermbg = 'black', guibg = 'black' })
-hi('CursorColumn', { ctermbg = 'black', guibg = 'black' })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
 	callback = function()
@@ -166,6 +163,8 @@ map('n', '<leader>h', ':Pick help<CR>')
 map('n', '<leader>e', ':Oil<CR>')
 
 map('n', '<leader>lf', vim.lsp.buf.format)
+
+map('n', 'gd', vim.lsp.buf.definition)
 
 map('n', '<leader>xx', '<CMD>Trouble diagnostics toggle<CR>')
 map('n', '<leader>xr', '<CMD>Trouble lsp_references toggle<CR>')
