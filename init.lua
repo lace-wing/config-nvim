@@ -63,10 +63,21 @@ vim.pack.add({
 require('oil').setup()
 
 require('mini.pick').setup()
+
 require('mini.pairs').setup()
+
 require('mini.surround').setup()
+
 require('mini.git').setup()
+
 require('mini.diff').setup()
+
+local msnip = require('mini.snippets')
+msnip.setup({
+	snippets = {
+		msnip.gen_loader.from_lang()
+	}
+})
 
 require('nvim-treesitter.configs').setup({
 	highlight = {
@@ -107,9 +118,6 @@ require('blink-cmp').setup({
 	fuzzy = { implementation = 'lua' },
 	keymap = {
 		preset = 'default',
-		['<Tab>'] = { 'select_next', 'fallback' },
-		['<S-Tab>'] = { 'select_prev', 'fallback' },
-		['<CR>'] = { 'accept', 'fallback' },
 		['<C-k>'] = {},
 	},
 	appearance = {
