@@ -34,4 +34,18 @@ M.ampersand = {
 	body = '&'
 }
 
+M.inline_code = {
+	prefix = 'c',
+	body = '```$1 $2```'
+}
+
+M.block_code = {
+	prefix = 'cc',
+	body = [[
+```$1
+$2
+```
+]]
+}
+
 return M

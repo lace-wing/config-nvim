@@ -85,7 +85,7 @@ require('nvim-treesitter.configs').setup({
 	},
 	indent = { enable = true },
 	auto_install = false,
-	ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', }
+	ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', 'typst', }
 })
 
 require('mason').setup()
