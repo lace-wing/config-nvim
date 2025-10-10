@@ -1,5 +1,5 @@
 local u = require('util')
-u.use(u.vim)
+local map = u.vim.map
 
 require('typst-preview').setup({
 	get_root = u.path.get_root,

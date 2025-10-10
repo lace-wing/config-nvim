@@ -85,7 +85,7 @@ require('nvim-treesitter.configs').setup({
 	},
 	indent = { enable = true },
 	auto_install = false,
-	ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', 'typst', }
+	ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', 'typst', 'verilog' }
 })
 
 require('mason').setup()
@@ -144,6 +144,10 @@ hi('SpellBad', { gui = 'undercurl', cterm = 'undercurl' })
 
 hi('Normal', { ctermbg = 'NONE', guibg = 'NONE' })
 hi('NormalNC', { ctermbg = 'NONE', guibg = 'NONE' })
+
+hi('TreesitterContext', { guisp = 'NONE' })
+vim.cmd([[highlight TreesitterContext guisp=NONE]])
+hi('TreesitterContextBottom', { gui = 'underline' })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
 	callback = function()

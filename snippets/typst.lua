@@ -16,12 +16,12 @@ M.block_equation = {
 
 M.power = {
 	prefix = 'pow',
-	body = '($1)^($0)'
+	body = '($1)^($2)'
 }
 
 M.fraction = {
 	prefix = 'fr',
-	body = '($1) / ($0)'
+	body = '($1) / ($2)'
 }
 
 M.equation_align = {
