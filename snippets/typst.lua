@@ -16,12 +16,12 @@ M.block_equation = {
 
 M.equation_super = {
 	prefix = 'sp',
-	body = '($1)^($2)'
+	body = '$1^($2)'
 }
 
 M.equation_sub = {
 	prefix = 'sb',
-	body = '($1)_($2)'
+	body = '$1_($2)'
 }
 
 M.fraction = {
