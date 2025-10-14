@@ -15,7 +15,7 @@ M.block_equation = {
 }
 
 M.power = {
-	prefix = 'pow',
+	prefix = 'pw',
 	body = '($1)^($2)'
 }
 
