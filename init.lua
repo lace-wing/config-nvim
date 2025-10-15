@@ -145,9 +145,11 @@ hi('SpellBad', { gui = 'undercurl', cterm = 'undercurl' })
 hi('Normal', { ctermbg = 'NONE', guibg = 'NONE' })
 hi('NormalNC', { ctermbg = 'NONE', guibg = 'NONE' })
 
-hi('TreesitterContext', { guisp = 'NONE' })
-vim.cmd([[highlight TreesitterContext guisp=NONE]])
-hi('TreesitterContextBottom', { gui = 'underline' })
+vim.api.nvim_create_autocmd('BufEnter', {
+	callback = function()
+		hi('TreesitterContext', { guisp = 'NONE' })
+	end
+})
 
 vim.api.nvim_create_autocmd('TextYankPost', {
 	callback = function()
