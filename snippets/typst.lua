@@ -9,7 +9,7 @@ M.block_equation = {
 	prefix = 'mm',
 	body = [[
 \$
-	$1
+	$0
 \$
 ]]
 }
