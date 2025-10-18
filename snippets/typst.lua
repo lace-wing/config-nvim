@@ -31,7 +31,7 @@ M.fraction = {
 
 M.equation_align = {
 	prefix = 'al',
-	body = '$1 & $2 $0 \\'
+	body = '$1 & $0 \\'
 }
 
 M.ampersand = {
