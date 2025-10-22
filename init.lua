@@ -81,11 +81,11 @@ msnip.setup({
 
 require('nvim-treesitter.configs').setup({
 	highlight = {
-		enabled = true
+		enable = true,
 	},
 	indent = { enable = true },
 	auto_install = false,
-	ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', 'typst', 'verilog' }
+	ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', 'typst', 'verilog', 'elixir' }
 })
 
 require('mason').setup()
@@ -98,6 +98,7 @@ vim.lsp.enable({
 	'nushell',
 	'svlangserver',
 	'java-language-server',
+	'elixirls',
 })
 
 require('blink-cmp').setup({
