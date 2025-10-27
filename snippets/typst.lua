@@ -10,8 +10,7 @@ M.block_equation = {
 	body = [[
 \$
 	$0
-\$
-]]
+\$]]
 }
 
 M.equation_super = {
@@ -49,8 +48,7 @@ M.block_code = {
 	body = [[
 ```$1
 $2
-```
-]]
+```]]
 }
 
 return M
