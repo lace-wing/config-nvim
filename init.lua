@@ -47,8 +47,10 @@ vim.pack.add({
 
 	{ src = 'https://github.com/Saghen/blink.cmp' },
 
-	{ src = 'https://github.com/bjarneo/pixel.nvim' },
+	-- { src = 'https://github.com/bjarneo/pixel.nvim' },
 	-- { src = 'https://github.com/sainnhe/everforest' },
+	-- { src = 'https://github.com/morhetz/gruvbox' },
+	{ src = 'https://github.com/p00f/alabaster.nvim' },
 
 	{ src = 'https://github.com/neovim/nvim-lspconfig' },
 	{ src = 'https://github.com/chomosuke/typst-preview.nvim' },
@@ -71,6 +73,17 @@ require('mini.surround').setup()
 require('mini.git').setup()
 
 require('mini.diff').setup()
+
+local hipatterns = require('mini.hipatterns')
+hipatterns.setup({
+	highlighters = {
+		fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+		hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+		todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+		note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
+		hex_color = hipatterns.gen_highlighter.hex_color(),
+	},
+})
 
 local msnip = require('mini.snippets')
 msnip.setup({
@@ -130,7 +143,8 @@ vim.g.macosime_cjk_ime = 'com.apple.inputmethod.SCIM.ITABC'
 vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
 
 -- colorscheme
-vim.cmd("colorscheme pixel")
+vim.cmd("colorscheme alabaster")
+
 -- vim.cmd([[
 -- 	let g:everforest_background = 'hard'
 -- 	let g:everforest_better_performance = 1
@@ -174,6 +188,7 @@ map({ 'n', 'v', 'x' }, '<leader>d', '"+d')
 map({ 'n', 'v', 'x' }, '<leader>p', '"+p')
 
 map('n', '<leader>f', ':Pick files<CR>')
+map('n', '<leader>b', ':Pick buffers<CR>')
 map('n', '<leader>h', ':Pick help<CR>')
 map('n', '<leader>e', ':Oil<CR>')
 

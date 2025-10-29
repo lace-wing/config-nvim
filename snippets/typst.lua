@@ -47,7 +47,7 @@ M.block_code = {
 	prefix = 'cc',
 	body = [[
 ```$1
-$2
+$0
 ```]]
 }
 
