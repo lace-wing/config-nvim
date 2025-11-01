@@ -112,6 +112,7 @@ vim.lsp.enable({
 	'svlangserver',
 	'java-language-server',
 	'elixirls',
+	'omnisharp',
 })
 
 require('blink-cmp').setup({
