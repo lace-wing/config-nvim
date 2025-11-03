@@ -58,6 +58,7 @@ vim.pack.add({
 	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
 	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter-context' },
 	{ src = 'https://github.com/folke/trouble.nvim' },
+	{ src = 'https://github.com/stevearc/conform.nvim' },
 
 	{ src = 'https://github.com/laishulu/vim-macos-ime' },
 })
@@ -106,6 +107,7 @@ require('mason').setup()
 require('trouble').setup()
 
 vim.lsp.enable({
+	'clangd',
 	'lua_ls',
 	'tinymist',
 	'nushell',
@@ -139,6 +141,17 @@ require('blink-cmp').setup({
 		use_nvim_cmp_as_default = true,
 	}
 })
+
+local conform = require('conform')
+conform.setup({
+	formatters_by_ft = {
+		asm = { 'asmfmt' },
+	},
+	default_format_opts = {
+		lsp_format = "fallback",
+	},
+})
+vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 
 vim.g.macosime_cjk_ime = 'com.apple.inputmethod.SCIM.ITABC'
 vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
@@ -186,14 +199,21 @@ map('n', '<leader>q', ':quit<CR>')
 
 map({ 'n', 'v', 'x' }, '<leader>y', '"+y')
 map({ 'n', 'v', 'x' }, '<leader>d', '"+d')
+map({ 'n', 'v', 'x' }, '<leader>c', '"+c')
+map({ 'n', 'v', 'x' }, '<leader>s', '"+s')
 map({ 'n', 'v', 'x' }, '<leader>p', '"+p')
+map({ 'n', 'v', 'x' }, '<leader>Y', '"+Y')
+map({ 'n', 'v', 'x' }, '<leader>D', '"+D')
+map({ 'n', 'v', 'x' }, '<leader>C', '"+C')
+map({ 'n', 'v', 'x' }, '<leader>S', '"+S')
+map({ 'n', 'v', 'x' }, '<leader>P', '"+P')
 
 map('n', '<leader>f', ':Pick files<CR>')
 map('n', '<leader>b', ':Pick buffers<CR>')
 map('n', '<leader>h', ':Pick help<CR>')
 map('n', '<leader>e', ':Oil<CR>')
 
-map('n', '<leader>lf', vim.lsp.buf.format)
+map('n', '<leader>l', conform.format, { desc = 'Format' })
 
 map('n', 'gd', vim.lsp.buf.definition)
 
@@ -203,7 +223,7 @@ map('n', '<leader>xs', '<CMD>Trouble symbols toggle<CR>')
 map('n', '<leader>xq', '<CMD>Trouble qflist toggle<CR>')
 
 -- Quick terminal normal mode
-map('t', '<ESC>', '<C-\\><C-n>', { desc = "Exit Ternimal Insert mode", noremap = true })
+map('t', '<ESC>', '<C-\\><C-n>', { desc = 'Exit Ternimal Insert mode', noremap = true })
 -- <C-w> in terminal mode
 -- <C-\><C-o> for a command in terminal mode
 map('t', '<C-w>', '<C-\\><C-o><C-w>', { desc = "Exit Ternimal Insert mode", noremap = true })
