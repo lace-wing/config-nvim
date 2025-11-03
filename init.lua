@@ -2,13 +2,13 @@ local u = require('util')
 local map = u.vim.map
 local hi = u.vim.hi
 
-vim.o.swapfile = false
-
 -- vim.opt.rtp:append('/usr/local/opt/fzf')
 vim.opt.path:append('**')
 vim.o.shell = 'zsh'
 
 vim.o.undofile = true
+vim.o.swapfile = false
+
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
@@ -21,8 +21,6 @@ vim.o.smartindent = true
 
 vim.o.autocomplete = false
 
--- vim.o.cursorcolumn = true
--- vim.o.cursorline = true
 vim.o.signcolumn = 'yes'
 vim.o.winborder = 'single'
 
@@ -193,34 +191,35 @@ map({ 'n', 'v', 'x' }, ';', ':')
 map({ 'n', 'v', 'x', }, 'j', 'gj')
 map({ 'n', 'v', 'x', }, 'k', 'gk')
 
-map('n', '<leader>o', ':update<CR> :source<CR>')
-map('n', '<leader>w', ':write<CR>')
-map('n', '<leader>q', ':quit<CR>')
+map('n', '<LEADER>o', ':update<CR> :source<CR>')
+map('n', '<LEADER>w', ':write<CR>')
+map('n', '<LEADER>q', ':quit<CR>')
 
-map({ 'n', 'v', 'x' }, '<leader>y', '"+y')
-map({ 'n', 'v', 'x' }, '<leader>d', '"+d')
-map({ 'n', 'v', 'x' }, '<leader>c', '"+c')
-map({ 'n', 'v', 'x' }, '<leader>s', '"+s')
-map({ 'n', 'v', 'x' }, '<leader>p', '"+p')
-map({ 'n', 'v', 'x' }, '<leader>Y', '"+Y')
-map({ 'n', 'v', 'x' }, '<leader>D', '"+D')
-map({ 'n', 'v', 'x' }, '<leader>C', '"+C')
-map({ 'n', 'v', 'x' }, '<leader>S', '"+S')
-map({ 'n', 'v', 'x' }, '<leader>P', '"+P')
+map({ 'n', 'v', 'x' }, '<LEADER>y', '"+y')
+map({ 'n', 'v', 'x' }, '<LEADER>d', '"+d')
+map({ 'n', 'v', 'x' }, '<LEADER>c', '"+c')
+map({ 'n', 'v', 'x' }, '<LEADER>s', '"+s')
+map({ 'n', 'v', 'x' }, '<LEADER>p', '"+p')
 
-map('n', '<leader>f', ':Pick files<CR>')
-map('n', '<leader>b', ':Pick buffers<CR>')
-map('n', '<leader>h', ':Pick help<CR>')
-map('n', '<leader>e', ':Oil<CR>')
+map({ 'n', 'v', 'x' }, '<LEADER>Y', '"+Y')
+map({ 'n', 'v', 'x' }, '<LEADER>D', '"+D')
+map({ 'n', 'v', 'x' }, '<LEADER>C', '"+C')
+map({ 'n', 'v', 'x' }, '<LEADER>S', '"+S')
+map({ 'n', 'v', 'x' }, '<LEADER>P', '"+P')
 
-map('n', '<leader>l', conform.format, { desc = 'Format' })
+map('n', '<LEADER>f', ':Pick files<CR>')
+map('n', '<LEADER>b', ':Pick buffers<CR>')
+map('n', '<LEADER>h', ':Pick help<CR>')
+map('n', '<LEADER>e', ':Oil<CR>')
+
+map('n', '<LEADER>l', conform.format, { desc = 'Format' })
 
 map('n', 'gd', vim.lsp.buf.definition)
 
-map('n', '<leader>xx', '<CMD>Trouble diagnostics toggle<CR>')
-map('n', '<leader>xr', '<CMD>Trouble lsp_references toggle<CR>')
-map('n', '<leader>xs', '<CMD>Trouble symbols toggle<CR>')
-map('n', '<leader>xq', '<CMD>Trouble qflist toggle<CR>')
+map('n', '<LEADER>xx', '<CMD>Trouble diagnostics toggle<CR>')
+map('n', '<LEADER>xr', '<CMD>Trouble lsp_references toggle<CR>')
+map('n', '<LEADER>xs', '<CMD>Trouble symbols toggle<CR>')
+map('n', '<LEADER>xq', '<CMD>Trouble qflist toggle<CR>')
 
 -- Quick terminal normal mode
 map('t', '<ESC>', '<C-\\><C-n>', { desc = 'Exit Ternimal Insert mode', noremap = true })

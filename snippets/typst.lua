@@ -28,6 +28,16 @@ M.fraction = {
 	body = '($1) / ($2)'
 }
 
+M.integral_double = {
+	prefix = 'dint',
+	body = 'integral.double'
+}
+
+M.limits = {
+	prefix = 'lim',
+	body = 'limits($1)'
+}
+
 M.equation_align = {
 	prefix = 'al',
 	body = '$1 & $0 \\'
