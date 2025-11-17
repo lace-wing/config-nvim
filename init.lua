@@ -4,7 +4,7 @@ local hi = u.vim.hi
 
 -- vim.opt.rtp:append('/usr/local/opt/fzf')
 vim.opt.path:append('**')
-vim.o.shell = 'zsh'
+vim.o.shell = 'bash'
 
 vim.o.undofile = true
 vim.o.swapfile = false
@@ -51,12 +51,16 @@ vim.pack.add({
 	{ src = 'https://github.com/p00f/alabaster.nvim' },
 
 	{ src = 'https://github.com/neovim/nvim-lspconfig' },
-	{ src = 'https://github.com/chomosuke/typst-preview.nvim' },
 	{ src = 'https://github.com/mason-org/mason.nvim' },
+	-- { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
+
 	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
 	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter-context' },
+
 	{ src = 'https://github.com/folke/trouble.nvim' },
 	{ src = 'https://github.com/stevearc/conform.nvim' },
+
+	{ src = 'https://github.com/chomosuke/typst-preview.nvim' },
 
 	{ src = 'https://github.com/laishulu/vim-macos-ime' },
 })
@@ -103,20 +107,34 @@ require('nvim-treesitter.configs').setup({
 })
 
 require('mason').setup()
-
-require('trouble').setup()
+-- require('mason-tool-installer').setup({
+-- 	auto_update = true,
+-- 	ensure_installed = {
+-- 		'clangd',
+-- 		'lua-language-server',
+-- 		'tinymist',
+-- 		'svlangserver',
+-- 		'java-language-server',
+-- 		'elixir-ls',
+-- 		'omnisharp',
+-- 		'nil'
+-- 	}
+-- })
 
 vim.lsp.enable({
 	'clangd',
 	'lua_ls',
 	'tinymist',
 	'nushell',
-	'svlangserver',
+	-- 'svlangserver',
+	'svls',
 	'java-language-server',
 	'elixirls',
 	'omnisharp',
 	'nil'
 })
+
+require('trouble').setup()
 
 require('blink-cmp').setup({
 	completion = {
