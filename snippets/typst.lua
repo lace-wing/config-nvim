@@ -29,12 +29,12 @@ M.fraction = {
 }
 
 M.integral_double = {
-	prefix = 'dint',
+	prefix = 'di',
 	body = 'integral.double'
 }
 
 M.limits = {
-	prefix = 'lim',
+	prefix = 'lm',
 	body = 'limits($1)'
 }
 
