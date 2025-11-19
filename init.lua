@@ -26,6 +26,7 @@ vim.o.winborder = 'single'
 
 vim.o.foldnestmax = 2
 vim.o.foldcolumn = '2'
+vim.o.foldlevelstart = 99
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -106,6 +107,10 @@ require('nvim-treesitter.configs').setup({
 		enable = true,
 	},
 	indent = { enable = true },
+	fold = {
+		enable = true,
+		disable = { 'comment' },
+	},
 	auto_install = false,
 	ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', 'typst', 'verilog', 'elixir' }
 })
