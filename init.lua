@@ -24,6 +24,9 @@ vim.o.autocomplete = false
 vim.o.signcolumn = 'yes'
 vim.o.winborder = 'single'
 
+vim.o.foldnestmax = 2
+vim.o.foldcolumn = '2'
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -59,6 +62,7 @@ vim.pack.add({
 
 	{ src = 'https://github.com/folke/trouble.nvim' },
 	{ src = 'https://github.com/stevearc/conform.nvim' },
+	{ src = 'https://github.com/chrisgrieser/nvim-origami' },
 
 	{ src = 'https://github.com/chomosuke/typst-preview.nvim' },
 
@@ -172,6 +176,13 @@ conform.setup({
 })
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 
+require('origami').setup({
+	autoFold = {
+		kinds = { "imports", "region" }, ---@type lsp.FoldingRangeKind[]
+	},
+
+})
+
 vim.g.macosime_cjk_ime = 'com.apple.inputmethod.SCIM.ITABC'
 vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
 
@@ -184,6 +195,7 @@ vim.cmd("colorscheme alabaster")
 -- 	let g:everforest_dim_inactive_windows = 1
 -- 	colorscheme everforest
 -- ]])
+
 -- highlights
 hi('statusline', { ctermbg = 'NONE', guibg = 'NONE' })
 hi('statuslineNC', { ctermbg = 'NONE', guibg = 'NONE' })
@@ -192,6 +204,9 @@ hi('SpellBad', { gui = 'undercurl', cterm = 'undercurl' })
 
 hi('Normal', { ctermbg = 'NONE', guibg = 'NONE' })
 hi('NormalNC', { ctermbg = 'NONE', guibg = 'NONE' })
+
+hi('Folded', { ctermbg = 'NONE', guibg = 'NONE' })
+hi('FoldColumn', { ctermfg = 'LightGreen', guifg = 'LightGreen', ctermbg = 'NONE', guibg = 'NONE' })
 
 vim.api.nvim_create_autocmd('BufEnter', {
 	callback = function()
