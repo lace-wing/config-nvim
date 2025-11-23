@@ -24,8 +24,8 @@ vim.o.autocomplete = false
 vim.o.signcolumn = 'yes'
 vim.o.winborder = 'single'
 
-vim.o.foldnestmax = 2
-vim.o.foldcolumn = '2'
+vim.o.foldnestmax = 1
+vim.o.foldcolumn = '1'
 vim.o.foldlevelstart = 99
 
 vim.g.mapleader = ' '
@@ -107,10 +107,7 @@ require('nvim-treesitter.configs').setup({
 		enable = true,
 	},
 	indent = { enable = true },
-	fold = {
-		enable = true,
-		disable = { 'comment' },
-	},
+	fold = { enable = true, },
 	auto_install = false,
 	ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', 'typst', 'verilog', 'elixir' }
 })
