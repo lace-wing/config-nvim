@@ -58,6 +58,8 @@ vim.pack.add({
 	{ src = 'https://github.com/mason-org/mason.nvim' },
 	-- { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
 
+	-- { src = 'https://github.com/mfussenegger/nvim-jdtls' },
+
 	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
 	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter-context' },
 
@@ -134,7 +136,7 @@ vim.lsp.enable({
 	'nushell',
 	-- 'svlangserver',
 	'svls',
-	'java-language-server',
+	'jdtls',
 	'elixirls',
 	'omnisharp',
 	'nil'

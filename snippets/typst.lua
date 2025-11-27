@@ -28,9 +28,19 @@ M.fraction = {
 	body = '($1) / ($2)'
 }
 
+M.integral = {
+	prefix = 'it',
+	body = 'integral_($1)^($2) '
+}
+
 M.integral_double = {
 	prefix = 'di',
 	body = 'integral.double'
+}
+
+M.integral_triple = {
+	prefix = 'ti',
+	body = 'integral.triple'
 }
 
 M.limits = {
@@ -38,14 +48,14 @@ M.limits = {
 	body = 'limits($1)'
 }
 
-M.equation_align = {
-	prefix = 'al',
-	body = '$1 & $0 \\'
+M.range_inclusive_exclusive = {
+	prefix = 'ie',
+	body = '[$0)'
 }
 
-M.ampersand = {
-	prefix = 'am',
-	body = '&'
+M.range_exclusive_inclusive = {
+	prefix = 'ei',
+	body = '($0]'
 }
 
 M.inline_code = {
