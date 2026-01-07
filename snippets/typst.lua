@@ -29,7 +29,7 @@ M.fraction = {
 }
 
 M.integral = {
-	prefix = 'it',
+	prefix = 'in',
 	body = 'integral_($1)^($2) '
 }
 

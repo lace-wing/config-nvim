@@ -4,7 +4,6 @@ local hi = u.vim.hi
 
 -- vim.opt.rtp:append('/usr/local/opt/fzf')
 vim.opt.path:append('**')
-vim.o.shell = 'bash'
 
 vim.o.undofile = true
 vim.o.swapfile = false
@@ -18,58 +17,57 @@ vim.o.relativenumber = true
 vim.o.tabstop = 2
 vim.o.shiftwidth = 2
 vim.o.smartindent = true
+vim.o.expandtab = true
 
 vim.o.autocomplete = false
 
 vim.o.signcolumn = 'yes'
-vim.o.winborder = 'single'
 
-vim.o.foldnestmax = 1
-vim.o.foldcolumn = '1'
+vim.o.foldmethod = 'marker'
+vim.o.foldcolumn = 'auto'
 vim.o.foldlevelstart = 99
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 vim.api.nvim_create_autocmd('LspAttach', {
-	callback = function(ev)
-		local client = vim.lsp.get_client_by_id(ev.data.client_id)
-		if client:supports_method('textDocument/completion') then
-			vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-		end
-	end,
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client:supports_method('textDocument/completion') then
+      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+    end
+  end,
 })
 
 vim.cmd("set completeopt+=noselect")
 
 vim.pack.add({
-	{ src = 'https://github.com/stevearc/oil.nvim' },
-	{ src = 'https://github.com/nvim-mini/mini.nvim', },
-	{ src = 'https://github.com/folke/which-key.nvim', },
+  { src = 'https://github.com/stevearc/oil.nvim' },
+  { src = 'https://github.com/nvim-mini/mini.nvim', },
+  { src = 'https://github.com/folke/which-key.nvim', },
 
-	{ src = 'https://github.com/Saghen/blink.cmp' },
+  { src = 'https://github.com/Saghen/blink.cmp' },
 
-	-- { src = 'https://github.com/bjarneo/pixel.nvim' },
-	-- { src = 'https://github.com/sainnhe/everforest' },
-	-- { src = 'https://github.com/morhetz/gruvbox' },
-	{ src = 'https://github.com/p00f/alabaster.nvim' },
+  -- { src = 'https://github.com/bjarneo/pixel.nvim' },
+  -- { src = 'https://github.com/sainnhe/everforest' },
+  -- { src = 'https://github.com/morhetz/gruvbox' },
+  { src = 'https://github.com/p00f/alabaster.nvim' },
 
-	{ src = 'https://github.com/neovim/nvim-lspconfig' },
-	{ src = 'https://github.com/mason-org/mason.nvim' },
-	-- { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
+  { src = 'https://github.com/neovim/nvim-lspconfig' },
+  { src = 'https://github.com/mason-org/mason.nvim' },
+  -- { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
 
-	-- { src = 'https://github.com/mfussenegger/nvim-jdtls' },
+  -- { src = 'https://github.com/mfussenegger/nvim-jdtls' },
 
-	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
-	{ src = 'https://github.com/nvim-treesitter/nvim-treesitter-context' },
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter-context' },
 
-	{ src = 'https://github.com/folke/trouble.nvim' },
-	{ src = 'https://github.com/stevearc/conform.nvim' },
-	{ src = 'https://github.com/chrisgrieser/nvim-origami' },
+  { src = 'https://github.com/folke/trouble.nvim' },
+  { src = 'https://github.com/stevearc/conform.nvim' },
 
-	{ src = 'https://github.com/chomosuke/typst-preview.nvim' },
+  { src = 'https://github.com/chomosuke/typst-preview.nvim' },
 
-	{ src = 'https://github.com/laishulu/vim-macos-ime' },
+  { src = 'https://github.com/laishulu/vim-macos-ime' },
 })
 
 require('oil').setup()
@@ -86,106 +84,88 @@ require('mini.diff').setup()
 
 local hipatterns = require('mini.hipatterns')
 hipatterns.setup({
-	highlighters = {
-		fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-		hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
-		todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
-		note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
-		warn      = { pattern = '%f[%w]()WARN()%f[%W]', group = 'MiniHipatternsHack' },
-		error     = { pattern = '%f[%w]()ERROR()%f[%W]', group = 'MiniHipatternsFixme' },
-		hex_color = hipatterns.gen_highlighter.hex_color(),
-	},
+  highlighters = {
+    fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+    hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+    todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+    note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
+    warn      = { pattern = '%f[%w]()WARN()%f[%W]', group = 'MiniHipatternsHack' },
+    error     = { pattern = '%f[%w]()ERROR()%f[%W]', group = 'MiniHipatternsFixme' },
+    hex_color = hipatterns.gen_highlighter.hex_color(),
+  },
 })
 
 local msnip = require('mini.snippets')
 msnip.setup({
-	snippets = {
-		msnip.gen_loader.from_lang()
-	}
+  snippets = {
+    msnip.gen_loader.from_lang()
+  }
 })
 
 require('nvim-treesitter.configs').setup({
-	highlight = {
-		enable = true,
-	},
-	indent = { enable = true },
-	fold = { enable = true, },
-	auto_install = false,
-	ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', 'typst', 'verilog', 'elixir' }
+  highlight = {
+    enable = true,
+  },
+  indent = { enable = true },
+  fold = { enable = true, },
+  auto_install = false,
+  ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', 'typst', 'verilog', 'elixir' }
 })
 
 require('mason').setup()
--- require('mason-tool-installer').setup({
--- 	auto_update = true,
--- 	ensure_installed = {
--- 		'clangd',
--- 		'lua-language-server',
--- 		'tinymist',
--- 		'svlangserver',
--- 		'java-language-server',
--- 		'elixir-ls',
--- 		'omnisharp',
--- 		'nil'
--- 	}
--- })
 
 vim.lsp.enable({
-	'clangd',
-	'lua_ls',
-	'tinymist',
-	'nushell',
-	-- 'svlangserver',
-	'svls',
-	'jdtls',
-	'elixirls',
-	'omnisharp',
-	'nil'
+  'ltex-ls',
+  'clangd',
+  'lua_ls',
+  'pyright',
+  'tinymist',
+  'nushell',
+  'verible',
+  -- 'veridian',
+  'jdtls',
+  'elixirls',
+  'omnisharp',
+  'nil',
 })
 
 require('trouble').setup()
 
 require('blink-cmp').setup({
-	completion = {
-		list = {
-			selection = {
-				preselect = false
-			}
-		},
-		documentation = {
-			auto_show = true,
-			auto_show_delay_ms = 500,
-		},
-	},
-	signature = {
-		enabled = true
-	},
-	fuzzy = { implementation = 'lua' },
-	keymap = {
-		preset = 'default',
-		['<C-k>'] = {},
-	},
-	appearance = {
-		use_nvim_cmp_as_default = true,
-	}
+  completion = {
+    list = {
+      selection = {
+        preselect = false
+      }
+    },
+    documentation = {
+      auto_show = true,
+      auto_show_delay_ms = 500,
+    },
+  },
+  signature = {
+    enabled = true
+  },
+  fuzzy = { implementation = 'lua' },
+  keymap = {
+    preset = 'default',
+    ['<C-k>'] = {},
+  },
+  appearance = {
+    use_nvim_cmp_as_default = true,
+  }
 })
 
 local conform = require('conform')
 conform.setup({
-	formatters_by_ft = {
-		asm = { 'asmfmt' },
-	},
-	default_format_opts = {
-		lsp_format = "fallback",
-	},
+  formatters_by_ft = {
+    asm = { 'asmfmt' },
+  },
+  default_format_opts = {
+    lsp_format = "fallback",
+  },
 })
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-
-require('origami').setup({
-	autoFold = {
-		kinds = { "imports", "region" }, ---@type lsp.FoldingRangeKind[]
-	},
-
-})
 
 vim.g.macosime_cjk_ime = 'com.apple.inputmethod.SCIM.ITABC'
 vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
@@ -213,17 +193,17 @@ hi('Folded', { ctermbg = 'NONE', guibg = 'NONE' })
 hi('FoldColumn', { ctermfg = 'LightGreen', guifg = 'LightGreen', ctermbg = 'NONE', guibg = 'NONE' })
 
 vim.api.nvim_create_autocmd('BufEnter', {
-	callback = function()
-		hi('TreesitterContext', { guisp = 'NONE' })
-	end
+  callback = function()
+    hi('TreesitterContext', { guisp = 'NONE' })
+  end
 })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
-	callback = function()
-		vim.highlight.on_yank()
-	end,
-	group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }),
-	pattern = '*',
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }),
+  pattern = '*',
 })
 
 map({ 'n', 'v', 'x' }, ';', ':')
