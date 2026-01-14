@@ -30,6 +30,12 @@ vim.o.foldlevelstart = 99
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+vim.filetype.add({
+  extension = {
+    objdump = 'objdump'
+  }
+})
+
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
@@ -129,7 +135,9 @@ vim.lsp.enable({
   'nil',
 })
 
-require('trouble').setup()
+require('trouble').setup({
+  auto_preview = false,
+})
 
 require('blink-cmp').setup({
   completion = {
@@ -231,6 +239,8 @@ map('n', '<LEADER>f', ':Pick files<CR>')
 map('n', '<LEADER>b', ':Pick buffers<CR>')
 map('n', '<LEADER>h', ':Pick help<CR>')
 map('n', '<LEADER>e', ':Oil<CR>')
+
+map('n', '<LEADER>/', ':set hlsearch<CR>')
 
 map('n', '<LEADER>l', conform.format, { desc = 'Format' })
 
