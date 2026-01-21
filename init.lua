@@ -32,7 +32,8 @@ vim.g.maplocalleader = ' '
 
 vim.filetype.add({
   extension = {
-    objdump = 'objdump'
+    objdump = 'objdump',
+    ipynb = 'jupyter',
   }
 })
 
@@ -54,16 +55,11 @@ vim.pack.add({
 
   { src = 'https://github.com/Saghen/blink.cmp' },
 
-  -- { src = 'https://github.com/bjarneo/pixel.nvim' },
-  -- { src = 'https://github.com/sainnhe/everforest' },
-  -- { src = 'https://github.com/morhetz/gruvbox' },
   { src = 'https://github.com/p00f/alabaster.nvim' },
 
   { src = 'https://github.com/neovim/nvim-lspconfig' },
   { src = 'https://github.com/mason-org/mason.nvim' },
-  -- { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
-
-  -- { src = 'https://github.com/mfussenegger/nvim-jdtls' },
+  { src = 'https://github.com/jmbuhr/otter.nvim' },
 
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter-context' },
@@ -72,6 +68,7 @@ vim.pack.add({
   { src = 'https://github.com/stevearc/conform.nvim' },
 
   { src = 'https://github.com/chomosuke/typst-preview.nvim' },
+  { src = 'https://github.com/goerz/jupytext.nvim' },
 
   { src = 'https://github.com/laishulu/vim-macos-ime' },
 })
@@ -133,6 +130,7 @@ vim.lsp.enable({
   'elixirls',
   'omnisharp',
   'nil',
+  'otter-ls',
 })
 
 require('trouble').setup({
@@ -174,6 +172,8 @@ conform.setup({
   },
 })
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+
+require('jupytext').setup({})
 
 vim.g.macosime_cjk_ime = 'com.apple.inputmethod.SCIM.ITABC'
 vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
