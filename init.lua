@@ -2,7 +2,6 @@ local u = require('util')
 local map = u.vim.map
 local hi = u.vim.hi
 
--- vim.opt.rtp:append('/usr/local/opt/fzf')
 vim.opt.path:append('**')
 
 vim.o.undofile = true
@@ -32,21 +31,16 @@ vim.g.maplocalleader = ' '
 
 vim.filetype.add({
   extension = {
+    eex = 'eelixir',
+    surface = 'surface',
     objdump = 'objdump',
     ipynb = 'jupyter',
   }
 })
 
-vim.api.nvim_create_autocmd('LspAttach', {
-  callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    if client:supports_method('textDocument/completion') then
-      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-    end
-  end,
-})
-
 vim.cmd("set completeopt+=noselect")
+
+u.lsp.setup_completion()
 
 vim.pack.add({
   { src = 'https://github.com/stevearc/oil.nvim' },
@@ -58,14 +52,14 @@ vim.pack.add({
   { src = 'https://github.com/p00f/alabaster.nvim' },
 
   { src = 'https://github.com/neovim/nvim-lspconfig' },
-  { src = 'https://github.com/mason-org/mason.nvim' },
-  { src = 'https://github.com/jmbuhr/otter.nvim' },
+  { src = 'https://github.com/GustavEikaas/easy-dotnet.nvim' },
 
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter-context' },
 
   { src = 'https://github.com/folke/trouble.nvim' },
   { src = 'https://github.com/stevearc/conform.nvim' },
+  { src = 'https://github.com/jpalardy/vim-slime' },
 
   { src = 'https://github.com/chomosuke/typst-preview.nvim' },
   { src = 'https://github.com/goerz/jupytext.nvim' },
@@ -115,22 +109,16 @@ require('nvim-treesitter.configs').setup({
   ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', 'typst', 'verilog', 'elixir' }
 })
 
-require('mason').setup()
-
 vim.lsp.enable({
-  'ltex-ls',
   'clangd',
   'lua_ls',
   'pyright',
   'tinymist',
   'nushell',
-  'verible',
-  -- 'veridian',
-  'jdtls',
   'elixirls',
-  'omnisharp',
-  'nil',
-  'otter-ls',
+  'easy-dotnet',
+  'nixd',
+  'harper_ls',
 })
 
 require('trouble').setup({
@@ -165,13 +153,15 @@ require('blink-cmp').setup({
 local conform = require('conform')
 conform.setup({
   formatters_by_ft = {
-    asm = { 'asmfmt' },
+    asm = { 'nasmfmt' },
   },
   default_format_opts = {
     lsp_format = "fallback",
   },
 })
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+
+vim.g.slime_target = 'neovim'
 
 require('jupytext').setup({})
 
@@ -180,13 +170,6 @@ vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
 
 -- colorscheme
 vim.cmd("colorscheme alabaster")
-
--- vim.cmd([[
--- 	let g:everforest_background = 'hard'
--- 	let g:everforest_better_performance = 1
--- 	let g:everforest_dim_inactive_windows = 1
--- 	colorscheme everforest
--- ]])
 
 -- highlights
 hi('statusline', { ctermbg = 'NONE', guibg = 'NONE' })
@@ -215,6 +198,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 map({ 'n', 'v', 'x' }, ';', ':')
+map({ 'n', 'v', 'x' }, ':', ':!')
 
 map({ 'n', 'v', 'x', }, 'j', 'gj')
 map({ 'n', 'v', 'x', }, 'k', 'gk')
@@ -239,6 +223,9 @@ map('n', '<LEADER>f', ':Pick files<CR>')
 map('n', '<LEADER>b', ':Pick buffers<CR>')
 map('n', '<LEADER>h', ':Pick help<CR>')
 map('n', '<LEADER>e', ':Oil<CR>')
+
+map('n', '<LEADER>n', ':make<CR>')
+map('n', '<LEADER>m', ':make ')
 
 map('n', '<LEADER>/', ':set hlsearch<CR>')
 
