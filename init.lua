@@ -35,6 +35,7 @@ vim.filetype.add({
     surface = 'surface',
     objdump = 'objdump',
     ipynb = 'jupyter',
+    icas = 'icas',
   }
 })
 
