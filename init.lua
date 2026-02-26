@@ -116,8 +116,8 @@ vim.lsp.enable({
   'pyright',
   'tinymist',
   'nushell',
-  'elixirls',
   'easy-dotnet',
+  'fsautocomplete',
   'nixd',
   'harper_ls',
 })
