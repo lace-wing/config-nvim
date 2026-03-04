@@ -1,6 +1,15 @@
 local u = require('util')
 local map = u.vim.map
-local hi = u.vim.hi
+
+vim.filetype.add({
+  extension = {
+    eex = 'eelixir',
+    surface = 'surface',
+    objdump = 'objdump',
+    ipynb = 'jupyter',
+    icas = 'icas',
+  }
+})
 
 vim.opt.path:append('**')
 
@@ -29,175 +38,6 @@ vim.o.foldlevelstart = 99
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-vim.filetype.add({
-  extension = {
-    eex = 'eelixir',
-    surface = 'surface',
-    objdump = 'objdump',
-    ipynb = 'jupyter',
-    icas = 'icas',
-  }
-})
-
-vim.cmd("set completeopt+=noselect")
-
-u.lsp.setup_completion()
-
-vim.pack.add({
-  { src = 'https://github.com/stevearc/oil.nvim' },
-  { src = 'https://github.com/nvim-mini/mini.nvim', },
-  { src = 'https://github.com/folke/which-key.nvim', },
-
-  { src = 'https://github.com/Saghen/blink.cmp' },
-
-  { src = 'https://github.com/p00f/alabaster.nvim' },
-
-  { src = 'https://github.com/neovim/nvim-lspconfig' },
-  { src = 'https://github.com/GustavEikaas/easy-dotnet.nvim' },
-
-  { src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
-  { src = 'https://github.com/nvim-treesitter/nvim-treesitter-context' },
-
-  { src = 'https://github.com/folke/trouble.nvim' },
-  { src = 'https://github.com/stevearc/conform.nvim' },
-  { src = 'https://github.com/jpalardy/vim-slime' },
-
-  { src = 'https://github.com/chomosuke/typst-preview.nvim' },
-  { src = 'https://github.com/goerz/jupytext.nvim' },
-
-  { src = 'https://github.com/laishulu/vim-macos-ime' },
-})
-
-require('oil').setup()
-
-require('mini.pick').setup()
-
-require('mini.pairs').setup()
-
-require('mini.surround').setup()
-
-require('mini.git').setup()
-
-require('mini.diff').setup()
-
-local hipatterns = require('mini.hipatterns')
-hipatterns.setup({
-  highlighters = {
-    fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-    hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
-    todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
-    note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
-    warn      = { pattern = '%f[%w]()WARN()%f[%W]', group = 'MiniHipatternsHack' },
-    error     = { pattern = '%f[%w]()ERROR()%f[%W]', group = 'MiniHipatternsFixme' },
-    hex_color = hipatterns.gen_highlighter.hex_color(),
-  },
-})
-
-local msnip = require('mini.snippets')
-msnip.setup({
-  snippets = {
-    msnip.gen_loader.from_lang()
-  }
-})
-
-require('nvim-treesitter.configs').setup({
-  highlight = {
-    enable = true,
-  },
-  indent = { enable = true },
-  fold = { enable = true, },
-  auto_install = false,
-  ensure_installed = { 'nu', 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'c_sharp', 'haskell', 'typst', 'verilog', 'elixir' }
-})
-
-vim.lsp.enable({
-  'clangd',
-  'lua_ls',
-  'pyright',
-  'tinymist',
-  'nushell',
-  'easy-dotnet',
-  'fsautocomplete',
-  'nixd',
-  'harper_ls',
-})
-
-require('trouble').setup({
-  auto_preview = false,
-})
-
-require('blink-cmp').setup({
-  completion = {
-    list = {
-      selection = {
-        preselect = false
-      }
-    },
-    documentation = {
-      auto_show = true,
-      auto_show_delay_ms = 500,
-    },
-  },
-  signature = {
-    enabled = true
-  },
-  fuzzy = { implementation = 'lua' },
-  keymap = {
-    preset = 'default',
-    ['<C-k>'] = {},
-  },
-  appearance = {
-    use_nvim_cmp_as_default = true,
-  }
-})
-
-local conform = require('conform')
-conform.setup({
-  formatters_by_ft = {
-    asm = { 'nasmfmt' },
-  },
-  default_format_opts = {
-    lsp_format = "fallback",
-  },
-})
-vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-
-vim.g.slime_target = 'neovim'
-
-require('jupytext').setup({})
-
-vim.g.macosime_cjk_ime = 'com.apple.inputmethod.SCIM.ITABC'
-vim.g.macosime_normal_ime = 'com.apple.keylayout.USExtended'
-
--- colorscheme
-vim.cmd("colorscheme alabaster")
-
--- highlights
-hi('statusline', { ctermbg = 'NONE', guibg = 'NONE' })
-hi('statuslineNC', { ctermbg = 'NONE', guibg = 'NONE' })
-
-hi('SpellBad', { gui = 'undercurl', cterm = 'undercurl' })
-
-hi('Normal', { ctermbg = 'NONE', guibg = 'NONE' })
-hi('NormalNC', { ctermbg = 'NONE', guibg = 'NONE' })
-
-hi('Folded', { ctermbg = 'NONE', guibg = 'NONE' })
-hi('FoldColumn', { ctermfg = 'LightGreen', guifg = 'LightGreen', ctermbg = 'NONE', guibg = 'NONE' })
-
-vim.api.nvim_create_autocmd('BufEnter', {
-  callback = function()
-    hi('TreesitterContext', { guisp = 'NONE' })
-  end
-})
-
-vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-  group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }),
-  pattern = '*',
-})
-
 map({ 'n', 'v', 'x' }, ';', ':')
 map({ 'n', 'v', 'x' }, ':', ':!')
 
@@ -220,24 +60,12 @@ map({ 'n', 'v', 'x' }, '<LEADER>C', '"+C')
 map({ 'n', 'v', 'x' }, '<LEADER>S', '"+S')
 map({ 'n', 'v', 'x' }, '<LEADER>P', '"+P')
 
-map('n', '<LEADER>f', ':Pick files<CR>')
-map('n', '<LEADER>b', ':Pick buffers<CR>')
-map('n', '<LEADER>h', ':Pick help<CR>')
-map('n', '<LEADER>e', ':Oil<CR>')
-
 map('n', '<LEADER>n', ':make<CR>')
 map('n', '<LEADER>m', ':make ')
 
 map('n', '<LEADER>/', ':set hlsearch<CR>')
 
-map('n', '<LEADER>l', conform.format, { desc = 'Format' })
-
 map('n', 'gd', vim.lsp.buf.definition)
-
-map('n', '<LEADER>xx', '<CMD>Trouble diagnostics toggle<CR>')
-map('n', '<LEADER>xr', '<CMD>Trouble lsp_references toggle<CR>')
-map('n', '<LEADER>xs', '<CMD>Trouble symbols toggle<CR>')
-map('n', '<LEADER>xq', '<CMD>Trouble qflist toggle<CR>')
 
 -- Quick terminal normal mode
 map('t', '<ESC>', '<C-\\><C-n>', { desc = 'Exit Ternimal Insert mode', noremap = true })
