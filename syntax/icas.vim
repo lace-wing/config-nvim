@@ -1,7 +1,7 @@
 " Incomplete Xcas vim syntax.
 " Language: icas (Xcas / Giac)
-" Author: ChatGPT
-" Date: 2026-02-11
+" Author: Lacewing
+" Date: 2026-03-05
 
 if exists("b:current_syntax")
   finish
@@ -119,5 +119,7 @@ highlight default link icasFunction     Function
 " Distinguish statement endings visually
 highlight default link icasPrintTerm    Special
 highlight default link icasSilentTerm   SpecialChar
+
+setlocal commentstring=//\ %s
 
 let b:current_syntax = "icas"
