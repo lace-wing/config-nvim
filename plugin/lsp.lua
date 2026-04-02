@@ -9,7 +9,7 @@ vim.pack.add({
 })
 
 vim.diagnostic.config({
-  virtual_text = true,
+  virtual_lines = true,
 })
 
 vim.lsp.enable({
@@ -17,11 +17,9 @@ vim.lsp.enable({
   'lua_ls',
   'pyright',
   'tinymist',
-  'nushell',
   'easy-dotnet',
   'fsautocomplete',
   'nixd',
-  -- 'harper_ls',
 })
 
 local conform = require('conform')

@@ -1,5 +1,3 @@
-local u = require('util')
-
 vim.pack.add({
   { src = 'https://github.com/Saghen/blink.cmp' },
   { src = 'https://github.com/nvim-mini/mini.nvim', },
@@ -20,19 +18,23 @@ require('blink-cmp').setup({
   signature = {
     enabled = true
   },
-  fuzzy = { implementation = 'lua' },
   keymap = {
     preset = 'default',
     ['<C-k>'] = {},
   },
   appearance = {
     use_nvim_cmp_as_default = true,
+  },
+  fuzzy = {
+    prebuilt_binaries = {
+      download = true,
+    },
   }
 })
 
 vim.cmd("set completeopt+=noselect")
 
-u.lsp.setup_completion()
+require('util.lsp').setup_completion()
 
 local msnip = require('mini.snippets')
 msnip.setup({
@@ -40,4 +42,3 @@ msnip.setup({
     msnip.gen_loader.from_lang()
   }
 })
-
