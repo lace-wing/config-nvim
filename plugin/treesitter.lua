@@ -6,13 +6,30 @@ vim.pack.add({
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects' },
 })
 
-require('nvim-treesitter').setup({
+local ts = require('nvim-treesitter')
+
+ts.setup({
   highlight = {
     enable = true,
   },
   indent = { enable = true },
   fold = { enable = true, },
-  ensure_installed = { 'c', 'cpp', 'zig', 'go', 'lua', 'python', 'rust', 'c_sharp', 'fsharp', 'haskell', 'typst', 'verilog', 'elixir' }
+})
+
+ts.install({
+  'c',
+  'cpp',
+  'zig',
+  'go',
+  'lua',
+  'python',
+  'rust',
+  'c_sharp',
+  'fsharp',
+  'haskell',
+  'typst',
+  'elixir',
+  'nu',
 })
 
 require('nvim-treesitter-textobjects').setup({
