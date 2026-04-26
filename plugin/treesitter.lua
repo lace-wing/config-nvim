@@ -6,7 +6,7 @@ vim.pack.add({
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter-textobjects' },
 })
 
-require('nvim-treesitter.configs').setup({
+require('nvim-treesitter').setup({
   highlight = {
     enable = true,
   },

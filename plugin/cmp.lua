@@ -1,4 +1,5 @@
 vim.pack.add({
+  { src = 'https://github.com/Saghen/blink.lib' },
   { src = 'https://github.com/Saghen/blink.cmp' },
   { src = 'https://github.com/nvim-mini/mini.nvim', },
 })
@@ -25,11 +26,6 @@ require('blink-cmp').setup({
   appearance = {
     use_nvim_cmp_as_default = true,
   },
-  fuzzy = {
-    prebuilt_binaries = {
-      download = true,
-    },
-  }
 })
 
 vim.cmd("set completeopt+=noselect")
